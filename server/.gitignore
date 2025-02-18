@@ -1,0 +1,18 @@
+# TypeScript output directory
+dist/
+
+# Environment variables files
+.env
+.env.*
+*.env
+
+# Logs
+logs/
+
+# PostgreSQL database backups
+*.sql
+*.dump
+
+# Debug files
+*.pid
+*.seed

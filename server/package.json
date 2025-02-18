@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Bridge",
+    "IsTheBridgeUp"
+  ],
+  "author": "Preston Sia (psia97)",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "description": "See when Seattle's draw bridges open for boat traffic.",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
