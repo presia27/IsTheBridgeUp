@@ -1,11 +1,14 @@
 const express = require('express');
 require('dotenv').config();
 const connector = require('./dbconfig/pgconnector');
+const { getBridgeData, findBridge } = require('./controllers/sdotConnector');
 
 /* Initialize Express */
 const app = express();
 
 /* Middleware */
+
+
 
 /* Routes */
 app.get('/get-bridges', async (req, res) => {
@@ -20,8 +23,38 @@ app.get('/get-bridge-by-id', async (req, res) => {
     const requestedId = req.query.id;
     const queryCols = "*"; // query all
     let bridgeData = await getBridges(queryCols, requestedId, searchMethod);
-    res.send(bridgeData);
+    
+    // store internal data before sanitizing it
+    const externalApiId = parseInt(bridgeData[0]["externalapi_id"]);
+    const apiProvider = bridgeData[0]["apiprovider"];
+
+    //Get bridge data from external API
+    const data = await getBridgeData();
+
+    // Add bridge status to object
+    const bridgeStatus = findBridge(data, externalApiId);
+    if (bridgeStatus["Status"] == "Closed") {
+        bridgeData[0]["status"] = "Down";
+    } else {
+        bridgeData[0]["status"] = "Up";
+    }
+    
+
+    // Sanitize data
+    delete bridgeData[0]["externalapi_id"];
+    delete bridgeData[0]["apiprovider"];
+    
+    res.send(bridgeData[0]);
 });
+
+app.get('/get-bridge-by-name', async (req, res) => {
+    const searchMethod = "name";
+    const requestedName = req.query.name;
+    const queryCols = "*";
+    let bridgeData = await getBridges(queryCols, requestedName, searchMethod);
+    res.send(bridgeData[0]);
+})
+
 
 
 /* Helper functions */
@@ -40,6 +73,8 @@ const getBridges = async (queryCols, bridgeId, method) => {
     //console.log(result.rows);
     return result.rows;
 }
+
+
 
 /* Configure port */
 const port = process.env.SERVER_PORT || 3001;

@@ -22,6 +22,7 @@
   "type": "commonjs",
   "description": "See when Seattle's draw bridges open for boat traffic.",
   "dependencies": {
+    "axios": "^1.8.4",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "pg": "^8.14.1"
