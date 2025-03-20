@@ -34,7 +34,8 @@ app.get('/get-bridge-by-name', async (req, res) => {
     const requestedName = req.query.name;
     const queryCols = "*";
     let bridgeData = await getBridges(queryCols, requestedName, searchMethod);
-    res.send(bridgeData[0]);
+
+    res.send(await getExternalData(bridgeData));
 })
 
 

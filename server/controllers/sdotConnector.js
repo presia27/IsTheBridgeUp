@@ -33,6 +33,11 @@ const getBridgeData = async() => {
             return metaWrapper;
         } catch(err) {
             console.error("An error occured" + err);
+            cacheData = {
+                "LastUpdate": currentTime,
+                "data": []
+            }; // clear cache data to prevent old data from being sent in error
+            lastRequestTime = 0; // Immediately reload on the next request
         }
 
     } else {
