@@ -25,7 +25,7 @@ const getBridgeData = async() => {
 
             // Wrap with metadata
             const metaWrapper = {
-                "LastRefresh": currentTime,
+                "LastUpdate": currentTime,
                 "data": data
             };
 

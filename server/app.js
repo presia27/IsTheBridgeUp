@@ -47,6 +47,9 @@ app.get('/get-bridge-by-id', async (req, res) => {
         delete bridgeData[0]["externalapi_id"];
         delete bridgeData[0]["apiprovider"];
 
+        // Add date
+        bridgeData[0]["LastUpdate"] = data["LastUpdate"];
+
     }
     
     res.send(bridgeData[0]);
