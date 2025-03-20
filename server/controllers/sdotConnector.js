@@ -23,8 +23,14 @@ const getBridgeData = async() => {
             const response = await apiClient.get();
             const data = JSON.parse(response.data);
 
-            cacheData = data;
-            return data;
+            // Wrap with metadata
+            const metaWrapper = {
+                "LastRefresh": currentTime,
+                "data": data
+            };
+
+            cacheData = metaWrapper;
+            return metaWrapper;
         } catch(err) {
             console.error("An error occured" + err);
         }

@@ -23,26 +23,31 @@ app.get('/get-bridge-by-id', async (req, res) => {
     const requestedId = req.query.id;
     const queryCols = "*"; // query all
     let bridgeData = await getBridges(queryCols, requestedId, searchMethod);
-    
-    // store internal data before sanitizing it
-    const externalApiId = parseInt(bridgeData[0]["externalapi_id"]);
-    const apiProvider = bridgeData[0]["apiprovider"];
 
-    //Get bridge data from external API
-    const data = await getBridgeData();
+    // null check
+    if (bridgeData != null && bridgeData != undefined
+        && bridgeData[0] != null && bridgeData != undefined) {
 
-    // Add bridge status to object
-    const bridgeStatus = findBridge(data, externalApiId);
-    if (bridgeStatus["Status"] == "Closed") {
-        bridgeData[0]["status"] = "Down";
-    } else {
-        bridgeData[0]["status"] = "Up";
+        // store internal data before sanitizing it
+        const externalApiId = parseInt(bridgeData[0]["externalapi_id"]);
+        const apiProvider = bridgeData[0]["apiprovider"];
+
+        //Get bridge data from external API
+        const data = await getBridgeData();
+
+        // Add bridge status to object
+        const bridgeStatus = findBridge(data["data"], externalApiId);
+        if (bridgeStatus["Status"] == "Closed") {
+            bridgeData[0]["status"] = "Down";
+        } else {
+            bridgeData[0]["status"] = "Up";
+        }
+
+        // Sanitize data
+        delete bridgeData[0]["externalapi_id"];
+        delete bridgeData[0]["apiprovider"];
+
     }
-    
-
-    // Sanitize data
-    delete bridgeData[0]["externalapi_id"];
-    delete bridgeData[0]["apiprovider"];
     
     res.send(bridgeData[0]);
 });
