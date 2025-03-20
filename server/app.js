@@ -1,10 +1,12 @@
 const express = require('express');
 require('dotenv').config();
+const nocache = require('nocache');
 const connector = require('./dbconfig/pgconnector');
 const { getBridgeData, findBridge } = require('./controllers/sdotConnector');
 
 /* Initialize Express */
 const app = express();
+app.use(nocache()); // DISABLE caching for clients
 
 /* Middleware */
 
@@ -23,36 +25,8 @@ app.get('/get-bridge-by-id', async (req, res) => {
     const requestedId = req.query.id;
     const queryCols = "*"; // query all
     let bridgeData = await getBridges(queryCols, requestedId, searchMethod);
-
-    // null check
-    if (bridgeData != null && bridgeData != undefined
-        && bridgeData[0] != null && bridgeData != undefined) {
-
-        // store internal data before sanitizing it
-        const externalApiId = parseInt(bridgeData[0]["externalapi_id"]);
-        const apiProvider = bridgeData[0]["apiprovider"];
-
-        //Get bridge data from external API
-        const data = await getBridgeData();
-
-        // Add bridge status to object
-        const bridgeStatus = findBridge(data["data"], externalApiId);
-        if (bridgeStatus["Status"] == "Closed") {
-            bridgeData[0]["status"] = "Down";
-        } else {
-            bridgeData[0]["status"] = "Up";
-        }
-
-        // Sanitize data
-        delete bridgeData[0]["externalapi_id"];
-        delete bridgeData[0]["apiprovider"];
-
-        // Add date
-        bridgeData[0]["LastUpdate"] = data["LastUpdate"];
-
-    }
     
-    res.send(bridgeData[0]);
+    res.send(await getExternalData(bridgeData));
 });
 
 app.get('/get-bridge-by-name', async (req, res) => {
@@ -80,6 +54,52 @@ const getBridges = async (queryCols, bridgeId, method) => {
     );
     //console.log(result.rows);
     return result.rows;
+}
+
+const getExternalData = async (bridgeData) => {
+    // Add metadata to bridge API response
+    let dataWrapper = {
+        "LastUpdate": null,
+        "bridges": [
+
+        ]
+    };
+
+    // null check
+    if (bridgeData != null && bridgeData != undefined) {
+        // Get bridge data from external API
+        const extData = await getBridgeData();
+
+        // Null check before adding date
+        if (extData != null && extData != undefined) {
+            dataWrapper["LastUpdate"] = extData["LastUpdate"];
+        } else {
+            return dataWrapper; // exit here if no data was returned
+        }
+
+        // loop through all bridges
+        for (var i = 0; i < bridgeData.length; i++) {
+            // store internal data before sanitizing it
+            const externalApiId = parseInt(bridgeData[i]["externalapi_id"]);
+            const apiProvider = bridgeData[i]["apiprovider"];
+
+            // Add bridge status to object
+            const bridgeStatus = findBridge(extData["data"], externalApiId);
+            if (bridgeStatus["Status"] == "Closed") {
+                bridgeData[i]["status"] = "Down";
+            } else {
+                bridgeData[i]["status"] = "Up";
+            }
+
+            // Sanitize data
+            delete bridgeData[i]["externalapi_id"];
+            delete bridgeData[i]["apiprovider"];
+
+            dataWrapper["bridges"].push(bridgeData[i]);
+        }
+
+    }
+    return dataWrapper;
 }
 
 
