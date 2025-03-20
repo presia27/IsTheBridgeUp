@@ -3,11 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [
     "Bridge",
     "IsTheBridgeUp"
+  ],
+  "contributors": [
+    {
+      "name": "Preston Sia",
+      "email": "pre.sia977@outlook.com",
+      "url": "https://presia27.github.io/"
+    }
   ],
   "author": "Preston Sia (psia97)",
   "license": "Apache-2.0",
@@ -15,6 +23,7 @@
   "description": "See when Seattle's draw bridges open for boat traffic.",
   "dependencies": {
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "pg": "^8.14.1"
   }
 }
