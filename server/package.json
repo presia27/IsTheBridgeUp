@@ -23,6 +23,7 @@
   "description": "See when Seattle's draw bridges open for boat traffic.",
   "dependencies": {
     "axios": "^1.8.4",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "nocache": "^4.0.0",

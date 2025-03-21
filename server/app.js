@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+const cors = require('cors');
 const nocache = require('nocache');
 const connector = require('./dbconfig/pgconnector');
 const { getBridgeData, findBridge } = require('./controllers/sdotConnector');
@@ -8,8 +9,9 @@ const { getBridgeData, findBridge } = require('./controllers/sdotConnector');
 const app = express();
 app.use(nocache()); // DISABLE caching for clients
 
-/* Middleware */
 
+/* Middleware */
+app.use(cors());
 
 
 /* Routes */
