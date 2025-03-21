@@ -7,7 +7,7 @@ const NavBar: React.FC = () => {
         <div className={Style.aaaNavWrap}>
             <div className={Style.aaaNav}>
                 <div className={Style.navLeft}>
-                    <img src={navLogo} alt="Is The Bridge Up Logo" width="96" height="96" />
+                    <img src={navLogo} alt="Is The Bridge Up Logo" width="64" height="64" />
                     <h1>Is The Bridge Up?</h1>
                 </div>
                 <div className={Style.navRight}>

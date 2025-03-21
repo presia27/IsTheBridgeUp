@@ -15,7 +15,9 @@ const PageLayout: React.FC<PageLayoutProps> = ({children}) => {
             </nav>
 
             <main>
-
+                <div className={Style.mainContent}>
+                    {children}
+                </div>
             </main>
 
             <footer>

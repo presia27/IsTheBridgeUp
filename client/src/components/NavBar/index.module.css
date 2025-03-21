@@ -2,7 +2,7 @@
 
 h1 {
     font-family: "Inika";
-    font-size: 32px;
+    font-size: 26px;
     font-weight: bold;
     color: #3c3c3c;
 }
@@ -34,7 +34,7 @@ h1 {
 
 .navLink a {
     padding: 12px;
-    font-size: 24px;
+    font-size: 18px;
     text-decoration: none;
     color: black;
 }
