@@ -16,12 +16,16 @@ const BridgeMon: React.FC = () => {
     const [bridgeList, setBridgeList] = useState([]); // hold response data
     const [updateTime, setUpdateTime] = useState(0); // hold last update time
 
+    /**
+     * Get data for all bridges
+     * @returns Promise when bridge data has been fetched
+     */
     const fetchAllBridgeData = () => {
         const apiRoute = "get-all-bridge-data"
 
         return new Promise(async (resolve) => {
             try {
-                console.log("[BridgeMon;] Fetching bridge data");
+                console.log("[BridgeMon:] Fetching bridge data");
                 const response = await axios.get(API_BASEURL + apiRoute);
 
                 setUpdateTime(response.data["LastUpdate"]);
@@ -34,17 +38,23 @@ const BridgeMon: React.FC = () => {
         });
     }
 
+    /* ***FETCH bridge data on load*** */
     useEffect(() => {
-        fetchAllBridgeData().then(() => {
-            console.log(updateTime);
-            console.log(bridgeList);
-        })
+        fetchAllBridgeData()
     }, []);
 
+    /* Generate page data */
     return (
-        <div className={Style.mainContent}>
-            <BridgeMonCard name="1st Ave" isOpen={false} />
-            <BridgeMonCard name="Ballard" isOpen={true} />
+        <div>
+            <div className={Style.mainContent}>
+                {bridgeList.map(bridge =>
+                    <BridgeMonCard
+                        name={bridge['name']}
+                        isOpen={bridge['status'] == 'Down' ? false : true}
+                        key={bridge['id']}></BridgeMonCard>
+                )}
+            </div>
+            <p>Updated at {new Date(updateTime).toLocaleTimeString()}</p>
         </div>
     );
 }
