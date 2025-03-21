@@ -28,8 +28,10 @@ const BridgeMon: React.FC = () => {
                 console.log("[BridgeMon:] Fetching bridge data");
                 const response = await axios.get(API_BASEURL + apiRoute);
 
-                setUpdateTime(response.data["LastUpdate"]);
-                setBridgeList(response.data["bridges"]);
+                if (response.status === 200) {
+                    setUpdateTime(response.data["LastUpdate"]);
+                    setBridgeList(response.data["bridges"]);
+                }
 
                 resolve(true);
             } catch (err) {
@@ -38,10 +40,17 @@ const BridgeMon: React.FC = () => {
         });
     }
 
-    /* ***FETCH bridge data on load*** */
+    /* ***FETCH bridge data on load */
     useEffect(() => {
-        fetchAllBridgeData()
+        fetchAllBridgeData();
     }, []);
+
+    /* ***FETCH bridge data on 60 second intervals*** */
+    useEffect(() => {
+        setTimeout(() => {
+            fetchAllBridgeData();
+        }, 60000); // Refresh every 1 minute
+    });
 
     /* Generate page data */
     return (
@@ -55,6 +64,7 @@ const BridgeMon: React.FC = () => {
                 )}
             </div>
             <p>Updated at {new Date(updateTime).toLocaleTimeString()}</p>
+            <button type='button' onClick={fetchAllBridgeData}>Refresh</button>
         </div>
     );
 }
