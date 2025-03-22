@@ -4,12 +4,16 @@
 
 .bridgeList{
     margin-top: 24px;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    column-gap: 12px;
 }
 
 .bCard {
     border: 2px solid #bbbbbb;
     border-radius: 5px;
     padding: 6px;
+    margin-top: 12px;
 
     display: grid;
     grid-template-columns: 320px auto;
@@ -44,4 +48,9 @@
 
 .bCard .bridgeUpText {
     color: #a02c2c;
+}
+
+.bCard .cardSubHead {
+    margin-bottom: 12px;
+    font-size: 20px;
 }

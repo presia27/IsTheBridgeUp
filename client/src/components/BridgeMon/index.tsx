@@ -96,7 +96,6 @@ const BridgeMon: React.FC = () => {
                 )}
             </div>
             <p>Updates occur about every minute. Last Update: {new Date(updateTime).toLocaleTimeString()}</p>
-            <button type='button' onClick={fetchAllBridgeData}>Refresh</button>
         </div>
     );
 }
