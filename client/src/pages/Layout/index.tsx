@@ -1,6 +1,7 @@
 import React from 'react';
 import Style from './index.module.css';
 import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 
 
 interface PageLayoutProps {
@@ -21,7 +22,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({children}) => {
             </main>
 
             <footer>
-
+                <Footer></Footer>
             </footer>
         </>
     );
