@@ -42,3 +42,13 @@ h1 {
 .navLink a:hover {
     color: #4f4f4f;
 }
+
+@media (max-width: 480px) {
+    .aaaNav .navLeft h1 {
+        display: none;
+    }
+
+    .aaaNav .navRight {
+        gap: 12px;
+    }
+}
