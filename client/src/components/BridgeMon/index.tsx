@@ -11,6 +11,17 @@ interface BridgeMonCard {
     isOpen: boolean;
 }
 
+type Bridge = {
+    id: string,
+    name: string,
+    region: string,
+    latitude: number,
+    longitude: number,
+    staticimg: string,
+    liveimg: string,
+    status: string
+}
+
 const BridgeMon: React.FC = () => {
     /* ***HOOKS*** */
     const [bridgeList, setBridgeList] = useState([]); // hold response data
@@ -25,12 +36,21 @@ const BridgeMon: React.FC = () => {
 
         return new Promise(async (resolve) => {
             try {
-                console.log("[BridgeMon:] Fetching bridge data");
+                console.log("[BridgeMon]: Fetching bridge data");
                 const response = await axios.get(API_BASEURL + apiRoute);
 
-                if (response.status === 200) {
+                // Check response status is 200 (OK) and data type for 'data' is 'Object'
+                if (response.status === 200 && response.data.constructor === Object) {
+                    
+                    // Sort response data by bridge ID
+                    if (response.data["bridges"].constructor === Array) { // type check
+                        response.data["bridges"].sort(dataCompare); // compare in order by bridge ID
+                    }
+
                     setUpdateTime(response.data["LastUpdate"]);
                     setBridgeList(response.data["bridges"]);
+                } else {
+                    console.error("Response data is incorrect in type: " + response.data.constructor);
                 }
 
                 resolve(true);
@@ -51,6 +71,18 @@ const BridgeMon: React.FC = () => {
             fetchAllBridgeData();
         }, 60000); // Refresh every 1 minute
     });
+
+    /* Helper Method - Compare function (think Java Comparable) for bridge API data */
+    function dataCompare(a: Bridge, b: Bridge) {
+        if (a.id < b.id) {
+            return -1; // a < b
+        } else if (a.id > b.id) {
+            return 1; // a > b
+        } else {
+            return 0; // must be equal
+        }
+    }
+    
 
     /* Generate page data */
     return (
