@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Style from './index.module.css';
 import navLogo from '../../assets/img/bridge_circleIcon.svg';
 
@@ -18,7 +19,7 @@ const NavBar: React.FC = () => {
                         <a href="">FAQ</a>
                     </div>
                     <div className={Style.navLink}>
-                        <a href="">About</a>
+                        <Link to="/about">About</Link>
                     </div>
                 </div>
             </div>

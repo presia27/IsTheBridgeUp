@@ -85,6 +85,7 @@ const Home: React.FC = () => {
         }
     }
     
+    /* ***Main page Content*** */
     return (
         <div className={Style.homeContent}>
             <BridgeMon></BridgeMon>
