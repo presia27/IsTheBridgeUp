@@ -25,8 +25,12 @@ app.get('/get-bridges', async (req, res) => {
 app.get('/get-bridge-by-id', async (req, res) => {
     const searchMethod = "id";
     const requestedId = req.query.id;
+    const timetags = req.query.timetags; // get time tag flag
     const queryCols = "*"; // query all
-    let bridgeData = await getBridges(queryCols, requestedId, searchMethod);
+
+    const timetagsbool = timetags == 'true' ? true : false; // use only a boolean value as a flag
+
+    let bridgeData = await getBridges(queryCols, requestedId, searchMethod, timetagsbool);
     
     res.send(await getExternalData(bridgeData));
 });
@@ -34,8 +38,12 @@ app.get('/get-bridge-by-id', async (req, res) => {
 app.get('/get-bridge-by-name', async (req, res) => {
     const searchMethod = "name";
     const requestedName = req.query.name;
-    const queryCols = "*";
-    let bridgeData = await getBridges(queryCols, requestedName, searchMethod);
+    const timetags = req.query.timetags; // get time tag flag
+    const queryCols = "*"; // query all
+
+    const timetagsbool = timetags == 'true' ? true : false; // use only a boolean value as a flag
+
+    let bridgeData = await getBridges(queryCols, requestedName, searchMethod, timetagsbool);
 
     res.send(await getExternalData(bridgeData));
 })
@@ -43,8 +51,12 @@ app.get('/get-bridge-by-name', async (req, res) => {
 app.get('/get-all-bridge-data', async (req, res) => {
     const searchMethod = null;
     const bridgeId = null;
+    const timetags = req.query.timetags; // get time tag flag
     const queryCols = "*"; // query all
-    let bridgeData = await getBridges(queryCols, bridgeId, searchMethod);
+
+    const timetagsbool = timetags == 'true' ? true : false; // use only a boolean value as a flag
+
+    let bridgeData = await getBridges(queryCols, bridgeId, searchMethod, timetagsbool);
 
     res.send(await getExternalData(bridgeData));
 });
@@ -54,8 +66,9 @@ app.get('/get-all-bridge-data', async (req, res) => {
 /* Helper functions */
 // Set bridgeId to null for all bridges
 // Method refers to the search parameter (e.g. search by id, name, etc.)
-const getBridges = async (queryCols, bridgeId, method) => {
-    let query = `SELECT ${queryCols} FROM bridges`;
+const getBridges = async (queryCols, bridgeId, method, flagTimeTags = false) => {
+    let query = `SELECT ${queryCols} FROM bridges`; // Hold SQL query
+    // null check
     if ((bridgeId != null && bridgeId != undefined && bridgeId != -1)
             && (method != null && method != undefined)) {
         query += ` WHERE ${method}='${bridgeId}'`;
@@ -65,6 +78,12 @@ const getBridges = async (queryCols, bridgeId, method) => {
         query
     );
     //console.log(result.rows);
+
+    // Append and return data with time tags on live URLs if desired by user
+    if (flagTimeTags) {
+        return appendTimeTags(result.rows);
+    }
+
     return result.rows;
 }
 
@@ -112,6 +131,31 @@ const getExternalData = async (bridgeData) => {
 
     }
     return dataWrapper;
+}
+
+/**
+ * Append the last four digits of
+ * the current time to the URL
+ * of the live image so that web
+ * browsers know to reload the image.
+ * @param {*} theData Bridge data from the database
+ */
+const appendTimeTags = (theData) => {
+    const curTime = Date.now();
+    const curTimeLastFour = curTime % 10000;
+
+    for (var i = 0; i < theData.length; i++) {
+
+        // Perform null check
+        if (theData[i] != null && theData[i] != undefined
+            && theData[i]['liveimg'] != null && theData[i]['liveimg'] != undefined
+            && theData[i]['liveimg'] != '') {
+
+            // append the last four digits of the current time in millis
+            theData[i]['liveimg'] = theData[i]['liveimg'] + '?' + curTimeLastFour;
+        }
+    }
+    return theData;
 }
 
 
