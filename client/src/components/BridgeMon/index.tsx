@@ -12,14 +12,14 @@ interface BridgeMonCard {
 }
 
 type Bridge = {
-    id: string,
-    name: string,
-    region: string,
-    latitude: number,
-    longitude: number,
-    staticimg: string,
-    liveimg: string,
-    status: string
+    id: string;
+    name: string;
+    region: string;
+    latitude: number;
+    longitude: number;
+    staticimg: string;
+    liveimg: string;
+    status: string;
 }
 
 const BridgeMon: React.FC = () => {
