@@ -100,13 +100,12 @@ const Home: React.FC = () => {
                         key={bridge['id']}>
                     </BridgeCard>
                 )}
-
-                <div>
-                    Note that the camera frames might not be in sync with
-                    the rest of the data. Please check both.
-                </div>
             </div>
-            
+            <div>
+                <br />
+                Note that the camera frames might not be in sync with
+                the rest of the data. Please check both.
+            </div>
         </div>
     );
 }

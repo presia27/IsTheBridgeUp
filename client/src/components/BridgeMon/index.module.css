@@ -1,3 +1,7 @@
+.bold {
+    font-weight: bold;
+}
+
 .bmContainer {
     background-color: #f8f8f8;
     border: 2px solid #bbbbbb;
@@ -24,8 +28,13 @@
     max-width: 160px;
 }
 
+.bmImgWrap img {
+    width: 96px;
+    height: 96px;
+}
+
 .cardLabel {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
 }
 
@@ -49,5 +58,18 @@
 @media (max-width: 960px) {
     .bmSubtext {
         margin-top: 16px;
+    }
+
+    .bmImgWrap img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .cardLabel {
+        font-size: 16px;
+    }
+
+    .bmHeader h1 {
+        font-size: 18px;
     }
 }

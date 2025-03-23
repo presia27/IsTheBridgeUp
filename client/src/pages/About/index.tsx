@@ -7,7 +7,10 @@ const About: React.FC= () => {
     /* ***Main page content*** */
     return (
         <div className={Style.aboutContainer}>
-            <BridgeMon></BridgeMon>
+            <div className={Style.bridgeMonContainer}>
+                <BridgeMon></BridgeMon>
+            </div>
+            
             <div className={Style.aboutMainContent}>
                 <h1>About</h1>
                 <h2>What is <i>Is The Bridge Up?</i></h2>

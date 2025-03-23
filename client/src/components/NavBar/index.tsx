@@ -15,10 +15,10 @@ const NavBar: React.FC = () => {
                 </div>
                 <div className={Style.navRight}>
                     <div className={Style.navLink}>
-                        <a href="">API</a>
+                        <Link to="/api">API</Link>
                     </div>
                     <div className={Style.navLink}>
-                        <a href="">FAQ</a>
+                        <Link to="/faq">FAQ</Link>
                     </div>
                     <div className={Style.navLink}>
                         <Link to="/about">About</Link>

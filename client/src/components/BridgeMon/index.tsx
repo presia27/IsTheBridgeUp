@@ -111,7 +111,7 @@ const BridgeMon: React.FC = () => {
                 </div>
                 
                 <div>
-                    <p>Updates occur about every minute. Last Update: {new Date(updateTime).toLocaleTimeString()}</p>
+                    <p>Updates occur about every minute. Last Update: <span className={Style.bold}>{new Date(updateTime).toLocaleTimeString()}</span></p>
                 </div>
             </div>
         </div>
@@ -128,8 +128,6 @@ const BridgeMonCard: React.FC<BridgeMonCard> = ({name, isOpen}) => {
                 <img
                     src={isOpen ? iconOpen : iconClosed}
                     alt={isOpen ? altTextOpen : altTextClosed}
-                    width="96"
-                    height="96"
                 />
             </div>
             <div className={Style.cardLabel}>

@@ -20,12 +20,12 @@ const Footer: React.FC = () => {
                 <br /><br />
                 Disclaimer: The information provided on this site is for informational
                 purposes only. By continuing to use this site, you assume all risk of use and
-                understand that I am not liable for any delays or damages of any kind that are a result of
-                using the information provided on this site/API. 
+                understand that the developers of this software are not liable for any delays or
+                damages of any kind that are a result of using the information provided by this site/API. 
                 <br /><br />
                 Advisory: Washington State law prohibits the use of personal electronic
                 devices while operating a motor vehicle on public
-                roads, with select exceptions such as the use of personal electronics
+                roads, with a few specific exceptions such as the use of personal electronics
                 to report an emergency as specified
                 under <a href="https://app.leg.wa.gov/rcw/default.aspx?cite=46.61.672" target="_blank">
                     RCW 46.61.672
