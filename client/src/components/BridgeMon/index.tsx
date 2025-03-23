@@ -86,7 +86,10 @@ const BridgeMon: React.FC = () => {
 
     /* Generate page data */
     return (
-        <div>
+        <div className={Style.bmContainer}>
+            <div className={Style.bmHeader}>
+                <h1>Bridge Status Summary - Seattle, WA</h1>
+            </div>
             <div className={Style.mainContent}>
                 {bridgeList.map(bridge =>
                     <BridgeMonCard
@@ -95,7 +98,22 @@ const BridgeMon: React.FC = () => {
                         key={bridge['id']}></BridgeMonCard>
                 )}
             </div>
-            <p>Updates occur about every minute. Last Update: {new Date(updateTime).toLocaleTimeString()}</p>
+            <div className={Style.bmSubtext}>
+                <div className={Style.bmLegendArea}>
+                    <div className={Style.bmLegendCard}>
+                        <img src={iconClosed} alt="Legend Bridge Closed" width="48" height="48" />
+                        <div>Bridge is Down</div>
+                    </div>
+                    <div className={Style.bmLegendCard}>
+                        <img src={iconOpen} alt="Legend Bridge Open" width="48" height="48" />
+                        <div>Bridge is UP</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <p>Updates occur about every minute. Last Update: {new Date(updateTime).toLocaleTimeString()}</p>
+                </div>
+            </div>
         </div>
     );
 }

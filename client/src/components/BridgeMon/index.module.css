@@ -1,9 +1,15 @@
-.mainContent {
+.bmContainer {
     background-color: #f8f8f8;
     border: 2px solid #bbbbbb;
     border-radius: 5px;
     padding: 8px;
+}
 
+.bmContainer h1 {
+    text-align: center;
+}
+
+.mainContent {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -21,4 +27,27 @@
 .cardLabel {
     font-size: 24px;
     font-weight: bold;
+}
+
+.bmSubtext {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.bmLegendArea {
+    display: flex;
+    gap: 16px;
+}
+
+.bmLegendCard {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+@media (max-width: 960px) {
+    .bmSubtext {
+        margin-top: 16px;
+    }
 }
