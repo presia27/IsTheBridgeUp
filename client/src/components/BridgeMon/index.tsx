@@ -88,7 +88,7 @@ const BridgeMon: React.FC = () => {
     return (
         <div className={Style.bmContainer}>
             <div className={Style.bmHeader}>
-                <h1>Bridge Status Summary - Seattle, WA</h1>
+                <h1>Bridge Status Right Now - Seattle, WA</h1>
             </div>
             <div className={Style.mainContent}>
                 {bridgeList.map(bridge =>
