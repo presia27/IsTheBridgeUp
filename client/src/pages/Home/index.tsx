@@ -100,6 +100,11 @@ const Home: React.FC = () => {
                         key={bridge['id']}>
                     </BridgeCard>
                 )}
+
+                <div>
+                    Note that the camera frames might not be in sync with
+                    the rest of the data. Please check both.
+                </div>
             </div>
             
         </div>
@@ -126,7 +131,7 @@ const BridgeCard: React.FC<BridgeCard> = ({bridgeName, isOpen, region, lastUpdat
                 </div>
 
                 <div className={Style.cardSubHead}>
-                    <div>Region: {region}</div>
+                    <div>Area: {region}</div>
                     <div>Last Update: {new Date(lastUpdate).toLocaleTimeString()}</div>
                 </div>
             </div>

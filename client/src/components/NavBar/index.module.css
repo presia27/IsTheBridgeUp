@@ -21,10 +21,11 @@ h1 {
     align-items: center;
 }
 
-.aaaNav .navLeft {
+.aaaNav .navLeft .logoLink {
     display: flex;
     align-items: center;
     gap: 12px;
+    text-decoration: none;
 }
 
 .aaaNav .navRight {

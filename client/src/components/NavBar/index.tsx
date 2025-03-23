@@ -8,8 +8,10 @@ const NavBar: React.FC = () => {
         <div className={Style.aaaNavWrap}>
             <div className={Style.aaaNav}>
                 <div className={Style.navLeft}>
-                    <img src={navLogo} alt="Is The Bridge Up Logo" width="64" height="64" />
-                    <h1>Is The Bridge Up?</h1>
+                    <Link to="/" className={Style.logoLink}>
+                        <img src={navLogo} alt="Is The Bridge Up Logo" width="64" height="64" />
+                        <h1>Is The Bridge Up?</h1>
+                    </Link>
                 </div>
                 <div className={Style.navRight}>
                     <div className={Style.navLink}>
