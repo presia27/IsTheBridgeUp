@@ -9,6 +9,9 @@ dist/
 # Logs
 logs/
 
+# Certificates
+cert/
+
 # PostgreSQL database backups
 *.sql
 *.dump
