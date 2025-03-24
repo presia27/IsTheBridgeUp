@@ -8,4 +8,18 @@ const connector = new Pool({
     database: process.env.DB_DATABASE,
 });
 
+/**
+ * Tests connection to database
+ */
+async function connectToDatabase() {
+    try {
+        await connector.connect();
+        console.log('Connected to database');
+    } catch (error) {
+        console.error('Error connecting to database', error);
+    }
+}
+
+connectToDatabase();
+
 module.exports = connector;
