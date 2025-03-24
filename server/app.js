@@ -74,17 +74,23 @@ const getBridges = async (queryCols, bridgeId, method, flagTimeTags = false) => 
         query += ` WHERE ${method}='${bridgeId}'`;
     }
 
-    const result = await connector.query(
-        query
-    );
-    //console.log(result.rows);
+    // EXECUTE QUERY
+    try {
+        const result = await connector.query(
+            query
+        );
+        //console.log(result.rows);
 
-    // Append and return data with time tags on live URLs if desired by user
-    if (flagTimeTags) {
-        return appendTimeTags(result.rows);
-    }
+        // Append and return data with time tags on live URLs if desired by user
+        if (flagTimeTags) {
+            return appendTimeTags(result.rows);
+        }
 
-    return result.rows;
+        return result.rows;
+    } catch (error) {
+        console.error('A database error occured: ' + error);
+        return {};
+    }   
 }
 
 const getExternalData = async (bridgeData) => {
