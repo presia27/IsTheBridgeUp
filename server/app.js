@@ -1,5 +1,5 @@
 const express = require('express');
-require('dotenv').config({ path: "../.env" });
+require('dotenv').config();
 const cors = require('cors');
 const nocache = require('nocache');
 const connector = require('./dbconfig/pgconnector');
