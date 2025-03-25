@@ -15,6 +15,14 @@ app.use(cors());
 
 
 /* Routes */
+app.get('/', async (req, res) => {
+    res.send(`
+        /get-bridges - Get a list of all bridges<br />
+        /get-bridge-by-id - params (id, timetags) - Get data for a specific bridge<br />
+        /get-all-bridge-data - params (timetags) - get status and info for all bridges<br />
+        `);
+})
+
 app.get('/get-bridges', async (req, res) => {
     const queryCols = "id, name, region"; // columns to use for query
     let bridgeData = await getBridges(queryCols, null);
