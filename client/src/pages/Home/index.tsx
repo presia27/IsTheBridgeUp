@@ -105,9 +105,6 @@ const Home: React.FC = () => {
             return 0; // must be equal
         }
     }
-
-    /* Helper Function - Delay execution of code when desired */
-    const delayMe = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     
     /* ***Main page Content*** */
     return (

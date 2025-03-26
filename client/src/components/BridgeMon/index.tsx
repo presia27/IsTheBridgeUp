@@ -104,8 +104,6 @@ const BridgeMon: React.FC = () => {
         }
     }
 
-    /* Helper Function - Delay execution of code when desired */
-    const delayMe = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     
 
     /* Generate page data */
