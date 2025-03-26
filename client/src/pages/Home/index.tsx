@@ -24,10 +24,15 @@ interface BridgeCard {
     liveImg: string;
 }
 
+const CONFIG = {
+    retryDelay: 1000
+}
+
 const Home: React.FC = () => {
     /* ***HOOKS*** */
     const [bridgeList, setBridgeList] = useState([]); // hold response data
     const [updateTime, setUpdateTime] = useState(0); // hold last update time
+    const [reqAttempts, setReqAttempts] = useState(0); // hold number of attempts per request
 
     /**
      * Get data for all bridges
@@ -51,13 +56,29 @@ const Home: React.FC = () => {
 
                     setUpdateTime(response.data["LastUpdate"]);
                     setBridgeList(response.data["bridges"]);
+                    setReqAttempts(0); // RESET request attempts counter after a successful request
+
                 } else {
                     console.error("Response data is incorrect in type: " + response.data.constructor);
                 }
 
                 resolve(true);
             } catch (err) {
-                console.error("An error occured: " + err);
+                if (axios.isAxiosError(err)) { // Ensure err if of Axios error type before treating it as such
+                    console.error("An error occured: " + err.message); // Log axios error
+                    //console.error(err.response?.status);
+                    if (err.response?.status === 503) { // Handle 503 (server unable to process request) - Action: Retry
+                        // Wait a few seconds and try again
+                        setTimeout(() => {
+                            console.log("Attempt after 500ms");
+                            fetchAllBridgeData();
+                        }, CONFIG.retryDelay)
+
+                        setReqAttempts(reqAttempts + 1);
+                    }
+                } else { // Log all other errors
+                    console.error(err);
+                }
             }
         });
     }
@@ -74,7 +95,7 @@ const Home: React.FC = () => {
         }, 60000); // Refresh every 1 minute
     });
 
-    /* Helper Method - Compare function (think Java Comparable) for bridge API data */
+    /* Helper Function - Compare function (think Java Comparable) for bridge API data */
     function dataCompare(a: Bridge, b: Bridge) {
         if (a.id < b.id) {
             return -1; // a < b
@@ -84,6 +105,9 @@ const Home: React.FC = () => {
             return 0; // must be equal
         }
     }
+
+    /* Helper Function - Delay execution of code when desired */
+    const delayMe = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     
     /* ***Main page Content*** */
     return (
