@@ -21,6 +21,11 @@
 
 
 /* Card Styling */
+.bmOuterLink { /* The HashLink that brings you to the homepage and scrolls to bridge card */
+    text-decoration: none;
+    color: inherit;
+}
+
 .bmCard {
     text-align: center;
     padding: 4px;

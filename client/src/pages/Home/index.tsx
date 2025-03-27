@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
+import { HashLink } from 'react-router-hash-link';
 import BridgeContext from '../../context/BridgeContext';
 import Style from './index.module.css';
 import BridgeMon from '../../components/BridgeMon';
 
 interface BridgeCard {
+    id: string;
     bridgeName: string;
     isOpen: boolean;
     region: string;
@@ -25,6 +27,7 @@ const Home: React.FC = () => {
             <div className={Style.bridgeList}>
                 {bridgeList.map(bridge => 
                     <BridgeCard
+                        id={bridge['id']}
                         bridgeName={bridge['name']}
                         isOpen={bridge['status'] == 'Down' ? false : true}
                         region={bridge['region']}
@@ -43,10 +46,10 @@ const Home: React.FC = () => {
     );
 }
 
-const BridgeCard: React.FC<BridgeCard> = ({bridgeName, isOpen, region, lastUpdate, liveImg}) => {
+const BridgeCard: React.FC<BridgeCard> = ({id, bridgeName, isOpen, region, lastUpdate, liveImg}) => {
     const liveImgAltText = "Live image of the " + bridgeName + " bridge";
     return (
-        <div className={Style.bCard}>
+        <div className={Style.bCard} id={`b_id${id}`}>
             <div className={Style.liveImg}>
                 <img src={liveImg} alt={liveImgAltText} />
             </div>
@@ -65,6 +68,7 @@ const BridgeCard: React.FC<BridgeCard> = ({bridgeName, isOpen, region, lastUpdat
                 <div className={Style.cardSubHead}>
                     <div>Area: {region}</div>
                     <div>Last Update: {new Date(lastUpdate).toLocaleTimeString()}</div>
+                    <HashLink to='#top'>Scroll to Top</HashLink>
                 </div>
             </div>
         </div>

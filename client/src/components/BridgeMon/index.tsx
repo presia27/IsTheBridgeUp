@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
+import { HashLink } from 'react-router-hash-link';
 import BridgeContext from '../../context/BridgeContext';
 import Style from './index.module.css';
 import iconClosed from '../../assets/img/bridge_iconClosed.svg';
 import iconOpen from '../../assets/img/bridge_iconOpen.svg';
 
 interface BridgeMonCard {
+    id: string;
     name: string;
     isOpen: boolean;
 }
@@ -25,6 +27,7 @@ const BridgeMon: React.FC = () => {
             <div className={Style.mainContent}>
                 {bridgeList.map(bridge =>
                     <BridgeMonCard
+                        id={bridge['id']}
                         name={bridge['name']}
                         isOpen={bridge['status'] == 'Down' ? false : true}
                         key={bridge['id']}></BridgeMonCard>
@@ -50,22 +53,24 @@ const BridgeMon: React.FC = () => {
     );
 }
 
-const BridgeMonCard: React.FC<BridgeMonCard> = ({name, isOpen}) => {
+const BridgeMonCard: React.FC<BridgeMonCard> = ({id, name, isOpen}) => {
     const altTextClosed = "Bridge is DOWN";
     const altTextOpen = "Bridge is UP";
 
     return (
-        <div className={Style.bmCard} title={isOpen ? altTextOpen : altTextClosed}>
-            <div className={Style.bmImgWrap}>
-                <img
-                    src={isOpen ? iconOpen : iconClosed}
-                    alt={isOpen ? altTextOpen : altTextClosed}
-                />
+        <HashLink to={`/#b_id${id}`} className={Style.bmOuterLink}>
+            <div className={Style.bmCard} title={isOpen ? altTextOpen : altTextClosed}>
+                <div className={Style.bmImgWrap}>
+                    <img
+                        src={isOpen ? iconOpen : iconClosed}
+                        alt={isOpen ? altTextOpen : altTextClosed}
+                    />
+                </div>
+                <div className={Style.cardLabel}>
+                    {name}
+                </div>
             </div>
-            <div className={Style.cardLabel}>
-                {name}
-            </div>
-        </div>
+        </HashLink>
     );
 }
 
