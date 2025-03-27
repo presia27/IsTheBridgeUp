@@ -52,7 +52,7 @@ export const BridgeProvider = ({ children }: React.PropsWithChildren) => {
         return new Promise(async (resolve) => {
             try {
                 console.log("[BridgeMon]: Fetching bridge data");
-                const response = await axios.get(API_BASEURL + apiRoute);
+                const response = await axios.get(API_BASEURL + apiRoute, {params: {timetags: true}});
 
                 // Check response status is 200 (OK) and data type for 'data' is 'Object'
                 if (response.status === 200 && response.data.constructor === Object) {
