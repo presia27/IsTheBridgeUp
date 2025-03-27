@@ -55,6 +55,11 @@
     font-size: 20px;
 }
 
+/* Don't show by default, only on small screens */
+.showWhenSmall {
+    display: none;
+}
+
 @media (max-width: 1080px) {
     .bCard {
         grid-template-columns: 256px auto;
@@ -64,6 +69,10 @@
 @media (max-width: 1050px) {
     .bridgeList{
         grid-template-columns: 1fr;
+    }
+
+    .showWhenSmall {
+        display: initial;
     }
 }
 
