@@ -2,15 +2,10 @@ const axios = require('axios');
 const NodeCache = require('node-cache');
 
 /* Timer variables */
-//const timeDelayMillis = 60000; // OLD
-const timeDelaySeconds = 60;
-const checkIntervalSeconds = 30;
-//let lastRequestTime = 0; // default to 0, set to current time on first request // OLD
-const theCache = new NodeCache({stdTTL: timeDelaySeconds, checkperiod: checkIntervalSeconds}); // Time-to-live 60 seconds; check every 30 seconds for expired entries
+const timeDelaySeconds = 45;
+const checkIntervalSeconds = 23;
+const theCache = new NodeCache({stdTTL: timeDelaySeconds, checkperiod: checkIntervalSeconds}); // Time-to-live 45 seconds; check every 23 seconds for expired entries
 const cacheKey = "bridgeData";
-const cacheKeyPrev = "lastBridgeData";
-
-//let cacheData; // OLD cache
 
 const CONFIG = {
     baseURL: 'https://web.seattle.gov/Travelers/api/Map/GetBridgeData'
@@ -63,41 +58,6 @@ const getBridgeData = async () => {
 
     
 }
-/*
-const getBridgeData = async() => {
-    const currentTime = Date.now();
-    if (lastRequestTime == 0 || currentTime - lastRequestTime >= timeDelayMillis) {
-        lastRequestTime = currentTime; // RESET timer
-
-        try{
-            console.log("Fetching data from SDOT...");
-            const response = await apiClient.get();
-            const data = JSON.parse(response.data);
-
-            // Wrap with metadata
-            const metaWrapper = {
-                "LastUpdate": currentTime,
-                "data": data
-            };
-
-            cacheData = metaWrapper;
-            return metaWrapper;
-        } catch(err) {
-            console.error("An error occured" + err);
-            cacheData = {
-                "LastUpdate": currentTime,
-                "data": []
-            }; // clear cache data to prevent old data from being sent in error
-            lastRequestTime = 0; // Immediately reload on the next request
-        }
-
-    } else {
-        console.log("Fetching cached data...");
-        return cacheData;
-    }
-
-    
-}*/
 
 const findBridge = (data, target) => {
     for (var i = 0; i < data.length; i++) {
