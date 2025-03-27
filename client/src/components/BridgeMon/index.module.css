@@ -29,12 +29,12 @@
 }
 
 .bmImgWrap img {
-    width: 96px;
-    height: 96px;
+    width: 72px;
+    height: 72px;
 }
 
 .cardLabel {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
 }
 
@@ -71,5 +71,16 @@
 
     .bmHeader h1 {
         font-size: 18px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .bmImgWrap img {
+        width: 96px;
+        height: 96px;
+    }
+
+    .cardLabel {
+        font-size: 22px;
     }
 }
