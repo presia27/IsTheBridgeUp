@@ -30,6 +30,7 @@ type BridgeDataContext = {
  * Configuration settings
  */
 const CONFIG = {
+    updateInterval: 60000,
     retryDelay: 1000
 }
 
@@ -93,15 +94,14 @@ export const BridgeProvider = ({ children }: React.PropsWithChildren) => {
 
     /* ***FETCH bridge data on load */
     useEffect(() => {
+        /* ***Perform initial data fetch ON LOAD */
         fetchAllBridgeData();
-    }, []);
 
-    /* ***FETCH bridge data on 60 second intervals*** */
-    useEffect(() => {
-        setTimeout(() => {
+        /* ***FETCH bridge data on a certain intervals*** */
+        setInterval(() => {
             fetchAllBridgeData();
-        }, 60000); // Refresh every 1 minute
-    });
+        }, CONFIG.updateInterval)
+    }, []);
 
     /* Helper Function - Compare function (think Java Comparable) for bridge API data */
     function dataCompare(a: Bridge, b: Bridge) {
