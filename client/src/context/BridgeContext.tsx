@@ -30,7 +30,7 @@ type BridgeDataContext = {
  * Configuration settings
  */
 const CONFIG = {
-    updateInterval: 60000,
+    updateInterval: 46500,
     retryDelay: 1000
 }
 
