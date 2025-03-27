@@ -74,7 +74,7 @@
     }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 2048px) {
     .bmImgWrap img {
         width: 96px;
         height: 96px;
