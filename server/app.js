@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const nocache = require('nocache');
+const rateLimit = require('express-rate-limit');
 const connector = require('./dbconfig/pgconnector');
 const { getBridgeData, findBridge } = require('./controllers/sdotConnector');
 
@@ -12,6 +13,15 @@ app.use(nocache()); // DISABLE caching for clients
 
 /* Middleware */
 app.use(cors());
+
+// Rate Limiting
+const limiter = rateLimit({
+    limit: 3,                        // Max number of requests...
+    windowMs: 500,                  // ...per windowMS (time in milliseconds)
+    message: "Rate limit exceeded." // Message sent when the limit is reached
+})
+
+app.use(limiter);   // ENABLE Rate limiting
 
 
 /* Routes */
