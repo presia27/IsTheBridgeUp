@@ -7,7 +7,7 @@ import BridgeMon from '../../components/BridgeMon';
 interface BridgeCard {
     id: string;
     bridgeName: string;
-    isOpen: boolean;
+    status: string;
     region: string;
     lastUpdate: number;
     liveImg: string;
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
                     <BridgeCard
                         id={bridge['id']}
                         bridgeName={bridge['name']}
-                        isOpen={bridge['status'] == 'Down' ? false : true}
+                        status={bridge['status']}
                         region={bridge['region']}
                         lastUpdate={updateTime}
                         liveImg={bridge['liveimg']}
@@ -46,8 +46,22 @@ const Home: React.FC = () => {
     );
 }
 
-const BridgeCard: React.FC<BridgeCard> = ({id, bridgeName, isOpen, region, lastUpdate, liveImg}) => {
+const BridgeCard: React.FC<BridgeCard> = ({id, bridgeName, status, region, lastUpdate, liveImg}) => {
     const liveImgAltText = "Live image of the " + bridgeName + " bridge";
+
+    let statusText;
+    let styleTag;
+    if (status == "Up") {
+        statusText = " UP";
+        styleTag = Style.bridgeUpText;
+    } else if (status == "Down") {
+        statusText = " Down";
+        styleTag = Style.bridgeDownText;
+    } else {
+        statusText = " Unknown";
+        styleTag = Style.bridgeUnknownText;
+    }
+
     return (
         <div className={Style.bCard} id={`b_id${id}`}>
             <div className={Style.liveImg}>
@@ -59,8 +73,8 @@ const BridgeCard: React.FC<BridgeCard> = ({id, bridgeName, isOpen, region, lastU
                     <h1>{bridgeName}</h1>
                     <h2 >
                         Status:
-                        <span className={isOpen ? Style.bridgeUpText : Style.bridgeDownText}>
-                            {isOpen ? " UP" : " Down"}
+                        <span className={styleTag}>
+                            {statusText}
                         </span>
                     </h2>
                 </div>

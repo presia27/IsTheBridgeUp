@@ -50,6 +50,10 @@
     color: #a02c2c;
 }
 
+.bCard .bridgeUnknownText {
+    color: #525252;
+}
+
 .bCard .cardSubHead {
     margin-bottom: 12px;
     font-size: 20px;
