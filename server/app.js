@@ -6,6 +6,10 @@ const rateLimit = require('express-rate-limit');
 const connector = require('./dbconfig/pgconnector');
 const { getBridgeData, findBridge } = require('./controllers/sdotConnector');
 
+/* String used when an HTTP/500 is sent due to a bad DB connection */
+const badConnectionPropertyName = "connectStatus"; // used for object property
+const badConnectionResponse = "The server is unable to obtain bridge data at this time."; // used for HTTP response
+
 /* Initialize Express */
 const app = express();
 app.use(nocache()); // DISABLE caching for clients
@@ -36,8 +40,14 @@ app.get('/', async (req, res) => {
 app.get('/get-bridges', async (req, res) => {
     const queryCols = "id, name, region"; // columns to use for query
     let bridgeData = await getBridges(queryCols, null);
-    let bridgeWrap = {"bridges": bridgeData};
-    res.send(bridgeWrap);
+
+    // If the DB connection can't be established (signified by the key {connectStatus: error} in bridgeData), return HTTP/500
+    if (Object.hasOwn(bridgeData, badConnectionPropertyName) && bridgeData["connectStatus"] == "error") { // check if property exists, check its value
+        res.status(500).send(badConnectionResponse); // Send HTTP/500
+    } else { // if no connectStatus property with an error value was found, proceed as normal
+        let bridgeWrap = {"bridges": bridgeData};
+        res.send(bridgeWrap);
+    }
 });
 
 app.get('/get-bridge-by-id', async (req, res) => {
@@ -134,7 +144,7 @@ const getBridges = async (queryCols, bridgeId, method, flagTimeTags = false) => 
         return result.rows;
     } catch (error) {
         console.error('A database error occured: ' + error);
-        return {};
+        return {"connectStatus": "error"};
     }   
 }
 
@@ -170,8 +180,10 @@ const getExternalData = async (bridgeData) => {
             const bridgeStatus = findBridge(extData["data"], externalApiId);
             if (bridgeStatus["Status"] == "Closed") {
                 bridgeData[i]["status"] = "Down";
-            } else {
+            } else if (bridgeStatus["Status"] == "Open") {
                 bridgeData[i]["status"] = "Up";
+            } else {
+                bridgeData[i]["status"] = "Unknown";
             }
 
             // Sanitize data
