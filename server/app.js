@@ -192,20 +192,28 @@ const getExternalData = async (bridgeData) => {
             // store internal data before sanitizing it
             const externalApiId = parseInt(bridgeData[i]["externalapi_id"]);
             const apiProvider = bridgeData[i]["apiprovider"];
+            const canTrust = bridgeData[i]["can_trust"]; // canTrust flag, determining whether to trust API data for this bridge
 
-            // Add bridge status to object
-            const bridgeStatus = findBridge(extData["data"], externalApiId);
-            if (bridgeStatus["Status"] == "Closed") {
-                bridgeData[i]["status"] = "Down";
-            } else if (bridgeStatus["Status"] == "Open") {
-                bridgeData[i]["status"] = "Up";
+            // Check if the canTrust flag, indicating whether the provided
+            // API data for a specific bridge can be trusted as specified in the DB.
+            if (!canTrust) {
+                bridgeData[i]["status"] = "Unknown"; // if data can't be trusted, set status to unknown
             } else {
-                bridgeData[i]["status"] = "Unknown";
+                // Add bridge status to object
+                const bridgeStatus = findBridge(extData["data"], externalApiId);
+                if (bridgeStatus["Status"] == "Closed") {
+                    bridgeData[i]["status"] = "Down";
+                } else if (bridgeStatus["Status"] == "Open") {
+                    bridgeData[i]["status"] = "Up";
+                } else {
+                    bridgeData[i]["status"] = "Unknown";
+                }
             }
 
             // Sanitize data
             delete bridgeData[i]["externalapi_id"];
             delete bridgeData[i]["apiprovider"];
+            delete bridgeData[i]["can_trust"];
 
             dataWrapper["bridges"].push(bridgeData[i]);
         }
