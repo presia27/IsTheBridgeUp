@@ -60,15 +60,22 @@ app.get('/get-bridge-by-id', async (req, res) => {
 
     let bridgeData = await getBridges(queryCols, requestedId, searchMethod, timetagsbool);
 
-    const externalBridgeData = await getExternalData(bridgeData); // Hold response data with external data appended
-
-    if (externalBridgeData["busy"]) { // Send HTTP/503 if the server is still processing the request to the third party (prevent multiple calls to 3rd party)
-        res.statusMessage = "The server is unable to process your request at this time";
-        res.status(503).end(); // Send status
+    // If the DB connection can't be established (signified by the key {connectStatus: error} in bridgeData), return HTTP/500
+    if (Object.hasOwn(bridgeData, badConnectionPropertyName) && bridgeData["connectStatus"] == "error") { // check if property exists, check its value
+        res.status(500).send(badConnectionResponse); // Send HTTP/500
     } else {
-        delete externalBridgeData["busy"]; // Sanitize busy flag
-        res.send(externalBridgeData); // Send response data
+        const externalBridgeData = await getExternalData(bridgeData); // Hold response data with external data appended
+
+        if (externalBridgeData["busy"]) { // Send HTTP/503 if the server is still processing the request to the third party (prevent multiple calls to 3rd party)
+            res.statusMessage = "The server is unable to process your request at this time";
+            res.status(503).end(); // Send status
+        } else {
+            delete externalBridgeData["busy"]; // Sanitize busy flag
+            res.send(externalBridgeData); // Send response data
+        }
     }
+
+    
    
 });
 
@@ -82,14 +89,19 @@ app.get('/get-bridge-by-name', async (req, res) => {
 
     let bridgeData = await getBridges(queryCols, requestedName, searchMethod, timetagsbool);
 
-    const externalBridgeData = await getExternalData(bridgeData); // Hold response data with external data appended
-
-    if (externalBridgeData["busy"]) { // Send HTTP/503 if the server is still processing the request to the third party (prevent multiple calls to 3rd party)
-        res.statusMessage = "The server is unable to process your request at this time";
-        res.status(503).end(); // Send status
+    // If the DB connection can't be established (signified by the key {connectStatus: error} in bridgeData), return HTTP/500
+    if (Object.hasOwn(bridgeData, badConnectionPropertyName) && bridgeData["connectStatus"] == "error") { // check if property exists, check its value
+        res.status(500).send(badConnectionResponse); // Send HTTP/500
     } else {
-        delete externalBridgeData["busy"]; // Sanitize busy flag
-        res.send(externalBridgeData); // Send response data
+        const externalBridgeData = await getExternalData(bridgeData); // Hold response data with external data appended
+
+        if (externalBridgeData["busy"]) { // Send HTTP/503 if the server is still processing the request to the third party (prevent multiple calls to 3rd party)
+            res.statusMessage = "The server is unable to process your request at this time";
+            res.status(503).end(); // Send status
+        } else {
+            delete externalBridgeData["busy"]; // Sanitize busy flag
+            res.send(externalBridgeData); // Send response data
+        }
     }
 
 })
@@ -104,14 +116,19 @@ app.get('/get-all-bridge-data', async (req, res) => {
 
     let bridgeData = await getBridges(queryCols, bridgeId, searchMethod, timetagsbool);
 
-    const externalBridgeData = await getExternalData(bridgeData); // Hold response data with external data appended
-
-    if (externalBridgeData["busy"]) { // Send HTTP/503 if the server is still processing the request to the third party (prevent multiple calls to 3rd party)
-        res.statusMessage = "The server is unable to process your request at this time";
-        res.status(503).end(); // Send status
+    // If the DB connection can't be established (signified by the key {connectStatus: error} in bridgeData), return HTTP/500
+    if (Object.hasOwn(bridgeData, badConnectionPropertyName) && bridgeData["connectStatus"] == "error") { // check if property exists, check its value
+        res.status(500).send(badConnectionResponse); // Send HTTP/500
     } else {
-        delete externalBridgeData["busy"]; // Sanitize busy flag
-        res.send(externalBridgeData); // Send response data
+        const externalBridgeData = await getExternalData(bridgeData); // Hold response data with external data appended
+
+        if (externalBridgeData["busy"]) { // Send HTTP/503 if the server is still processing the request to the third party (prevent multiple calls to 3rd party)
+            res.statusMessage = "The server is unable to process your request at this time";
+            res.status(503).end(); // Send status
+        } else {
+            delete externalBridgeData["busy"]; // Sanitize busy flag
+            res.send(externalBridgeData); // Send response data
+        }
     }
 
 });
