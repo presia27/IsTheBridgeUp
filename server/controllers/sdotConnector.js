@@ -1,4 +1,5 @@
 const axios = require('axios');
+const https = require('https');
 const NodeCache = require('node-cache');
 
 /* Timer variables */
@@ -11,8 +12,14 @@ const CONFIG = {
     baseURL: 'https://web.seattle.gov/Travelers/api/Map/GetBridgeData'
 }
 
+// Fix SSL verification issue 2025-05-28
+const myHttpsAgent = new https.Agent({
+    rejectUnauthorized: false
+});
+
 const apiClient = axios.create({
-    baseURL: CONFIG.baseURL
+    baseURL: CONFIG.baseURL,
+    httpsAgent: myHttpsAgent
 });
 
 const getBridgeData = async () => {
