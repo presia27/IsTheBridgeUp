@@ -1,0 +1,63 @@
+{
+  "name": "isthebridgeup-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index/js",
+    "start:dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
+    "build": "tsc && tsc-alias",
+    "build:watch": "tsc --watch",
+    "clean": "rimraf dist",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "dev": "npm run start:dev"
+  },
+  "keywords": [
+    "Bridge",
+    "IsTheBridgeUp"
+  ],
+  "contributors": [
+    {
+      "name": "Preston Sia",
+      "email": "pre.sia977@outlook.com",
+      "url": "https://presia27.github.io/"
+    }
+  ],
+  "author": "Preston Sia (psia97)",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "description": "See when Seattle's draw bridges open for boat traffic.",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "nocache": "^4.0.0",
+    "node-cache": "^5.1.2",
+    "pg": "^8.14.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github:presia27/IsTheBridgeUp"
+  },
+  "homepage": "https://github.com/presia27/IsTheBridgeUp",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.1",
+    "@types/pg": "^8.16.0",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
+    "eslint": "^9.39.1",
+    "prettier": "^3.7.4",
+    "rimraf": "^6.1.2",
+    "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3"
+  }
+}
