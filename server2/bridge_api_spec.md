@@ -33,12 +33,12 @@ None
   "count": 2,
   "bridges": [
     {
-      "id": "4",
+      "id": 4,
       "name": "South Park",
       "region": "Duwamish"
     },
     {
-      "id": "7",
+      "id": 7,
       "name": "University",
       "region": "Ship Canal"
     }
@@ -49,7 +49,7 @@ None
 **Response Fields**:
 - `count` (integer) - Total number of bridges
 - `bridges` (array) - Array of bridge metadata objects
-  - `id` (string) - Unique identifier for the bridge
+  - `id` (number) - Unique identifier for the bridge
   - `name` (string) - Full name of the bridge
   - `region` (string) - Geographic area or waterway description
 
@@ -70,7 +70,7 @@ Retrieves complete information for a specific bridge, including current up/down 
 **Endpoint**: `GET /api/v1/bridges/{id}`
 
 #### Path Parameters
-- `id` (string, required) - The unique identifier of the bridge
+- `id` (number, required) - The unique identifier of the bridge
 
 #### Query Parameters
 - `timetags` (boolean, optional) - When set to `true`, appends the last 4 digits of the current Unix timestamp (in milliseconds) to the `liveimg` URL. This forces browsers to refresh cached images.
@@ -85,9 +85,10 @@ Retrieves complete information for a specific bridge, including current up/down 
 ```json
 {
   "LastUpdate": 1765599161982,
+  "count": 1,
   "bridges": [
     {
-      "id": "4",
+      "id": 4,
       "name": "South Park",
       "region": "Duwamish",
       "latitude": 47.529234689935,
@@ -105,7 +106,7 @@ Retrieves complete information for a specific bridge, including current up/down 
 **Response Fields**:
 - `LastUpdate` (integer) - Unix timestamp in milliseconds of the last data refresh from transportation agencies
 - `bridges` (array) - Array containing a single bridge object
-  - `id` (string) - Unique identifier for the bridge
+  - `id` (number) - Unique identifier for the bridge
   - `name` (string) - Full name of the bridge
   - `region` (string) - Geographic area or waterway description
   - `latitude` (float) - Latitude coordinate of the bridge location
@@ -114,7 +115,7 @@ Retrieves complete information for a specific bridge, including current up/down 
   - `liveimg` (string|null) - URL of a live traffic camera image (updated frequently)
   - `bridge_type` (string) - Type of bridge mechanism (e.g., "Bascule", "Vertical Lift")
   - `short_name` (string) - Abbreviated name of the bridge
-  - `status` (string) - Current bridge status: `"Up"` (raised/open) or `"Down"` (lowered/closed to vessel traffic)
+  - `status` (string) - Current bridge status: `"Up"` (raised/open) or `"Down"` (lowered/closed to vessel traffic) or `"Unknown"`
 
 #### Error Responses
 
@@ -154,7 +155,7 @@ Retrieves complete information for all bridges, including current status for eac
   "count": 2,
   "bridges": [
     {
-      "id": "4",
+      "id": 4,
       "name": "South Park",
       "region": "Duwamish",
       "latitude": 47.529234689935,
@@ -166,7 +167,7 @@ Retrieves complete information for all bridges, including current status for eac
       "status": "Down"
     },
     {
-      "id": "7",
+      "id": 7,
       "name": "University",
       "region": "Ship Canal",
       "latitude": 47.6526527598382,
@@ -203,6 +204,7 @@ Retrieves complete information for all bridges, including current status for eac
 
 - `"Up"` - Bridge is raised/open to allow vessel traffic to pass underneath
 - `"Down"` - Bridge is lowered/closed, allowing vehicle and pedestrian traffic to cross
+-  `"Unknown"` - Data is unavailable
 
 ---
 

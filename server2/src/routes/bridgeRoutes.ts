@@ -5,7 +5,7 @@
  */
 
 import { getBridgeById, getBridgeList } from '@/controllers/bridgeRoutesController';
-import { validateId } from '@/middleware/bridgeRoutesValidation';
+import { validateId, validateTimetags } from '@/middleware/bridgeRoutesValidation';
 import { Router } from 'express';
 
 export const bridgeRoutes = Router();
@@ -18,7 +18,7 @@ bridgeRoutes.get('/list', getBridgeList);
 /**
  * Retrieves complete information for a specific bridge, including current up/down status.
  */
-bridgeRoutes.get('/:id', validateId, getBridgeById);
+bridgeRoutes.get('/:id', validateId, validateTimetags, getBridgeById);
 
 /**
  * Retrieves complete information for all bridges, including current status for each.

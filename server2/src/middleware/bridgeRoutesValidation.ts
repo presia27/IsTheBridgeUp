@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { param, validationResult } from 'express-validator';
+import { param, query, validationResult } from 'express-validator';
 
 /**
  * Handle all validation issues
@@ -24,7 +24,12 @@ export const validateId = [
       .trim()
       .notEmpty()
       .withMessage('ID cannot be empty')
-      .isLength({ max: 250 })
-      .withMessage('ID cannot be longer than 250 numbers/characters'),
+      .isNumeric(),
   handleErrors
-]
+];
+
+export const validateTimetags = [
+  query('timetags')
+      .optional()
+      .isBoolean()
+];

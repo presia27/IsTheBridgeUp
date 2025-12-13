@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getPool } from '@/utilities/pgDatabase';
-import { QueryResult } from 'pg';
-import { BridgeListItem } from '@/types/bridgeResponseTypes';
+import { QueryResult, QueryResultRow } from 'pg';
+import { BridgeDetails, BridgeDetailsDbResponse, BridgeListItem } from '@/types/bridgeResponseTypes';
 
 export async function getBridgeList(req: Request, res: Response) {
   // query strings to use
@@ -23,5 +23,30 @@ export async function getBridgeList(req: Request, res: Response) {
 }
 
 export async function getBridgeById(req: Request, res: Response) {
+  const requestedId: number = parseInt(req.params.id as string);
+  const timetags: boolean = req.query.timetags;
+  const queryString: string = 'SELECT * FROM bridges WHERE id=$1';
+
+  const pool = getPool();
+
+  // Get metadata
+  const bridgeDbResult: QueryResult<BridgeDetailsDbResponse> = await pool.query(queryString, [requestedId]);
+
+  // Sort all responses by API
+  //const sdotBridges = bridgeDbResult.rows.filter
+
   
+
+  // const bridgeDetailsCleaned: BridgeDetails[] = bridgeDbResult.rows.map(row => ({
+  //   id: row.id,
+  //   name: row.name,
+  //   region: row.region,
+  //   latitude: row.latitude,
+  //   longitude: row.longitude,
+  //   staticimg: row.staticimg,
+  //   liveimg: row.liveimg,
+  //   'bridge_type': row['bridge_type'],
+  //   'short_name': row['short_name'],
+  //   status: 'Unknown'
+  // }))
 }
