@@ -6,9 +6,17 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 // Required variables
-const requiredVars: string[] = [
-
+const requiredVarsDev: string[] = [
+  'DB_HOST',
+  'DB_PORT',
+  'DB_DATABASE',
+  'DB_USER',
+  'DB_PASSWORD'
 ];
+
+const requiredVarsProd: string[] = [
+  'connectionString'
+]
 
 // Load .env
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -52,6 +60,7 @@ export const isProduction = (): boolean => {
  * keys and values are present.
  */
 export const validateEnv = (): void => {
+  const requiredVars = isProduction() ? requiredVarsProd : requiredVarsDev;
   const missing = requiredVars.filter(varName => {
     try {
       getEnvVar(varName);
