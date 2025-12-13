@@ -21,3 +21,7 @@ export async function getBridgeList(req: Request, res: Response) {
     bridges: bridgeListCleaned
   });
 }
+
+export async function getBridgeById(req: Request, res: Response) {
+  
+}
