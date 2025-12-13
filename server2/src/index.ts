@@ -50,3 +50,17 @@ const startServer = async(): Promise<void> => {
     process.exit(1);
   }
 }
+
+// Handle uncaught EXCEPTIONS and REJECTIONS
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception: ', error);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled rejection at: ', promise, 'Reason:', reason);
+  process.exit(1);
+});
+
+// Actually START the server
+startServer();
