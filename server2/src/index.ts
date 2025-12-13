@@ -5,6 +5,7 @@
  */
 
 import createApp from "@/app";
+import { validateEnv } from "./utilities/envConfig";
 
 const PORT = process.env.PORT || 8000;
 
@@ -13,15 +14,20 @@ const PORT = process.env.PORT || 8000;
  * Includes graceful shutdown
  */
 const startServer = async(): Promise<void> => {
+  console.log('\n');
+
   try {
     // Validate environment
-    // todo
+    validateEnv();
+    console.log('Environment variables validated');
 
     // Connect to database
     // todo
 
     const app = createApp();
     const server = app.listen(PORT, () => {
+      console.log('\n');
+      console.log('/=======\\    IsTheBridgeUp?');
       console.log(`Server running on port ${PORT}`);
     });
 
