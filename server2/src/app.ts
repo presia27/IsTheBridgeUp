@@ -8,7 +8,7 @@ import cors from 'cors';
 import { limiter } from './middleware/rateLimiter';
 import nocache from 'nocache';
 import express, {Express} from 'express';
-import routes from './routes';
+import { routes } from './routes';
 
 const createApp = (): Express => {
   const app = express();

@@ -3,8 +3,9 @@
  */
 
 import { Router } from "express";
+import { bridgeRoutes } from "./bridgeRoutes";
 
-const routes = Router();
+export const routes = Router();
 
 routes.get('/', (request, response) => {
   response.json({
@@ -18,4 +19,4 @@ routes.get('/', (request, response) => {
   });
 });
 
-export default routes;
+routes.use('/api/v1/bridges', bridgeRoutes);
