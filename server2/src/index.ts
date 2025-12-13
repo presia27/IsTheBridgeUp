@@ -6,6 +6,7 @@
 
 import createApp from "@/app";
 import { validateEnv } from "./utilities/envConfig";
+import { connectToDatabase, disconnectFromDatabase } from "./utilities/pgDatabase";
 
 const PORT = process.env.PORT || 8000;
 
@@ -22,7 +23,8 @@ const startServer = async(): Promise<void> => {
     console.log('Environment variables validated');
 
     // Connect to database
-    // todo
+    await connectToDatabase();
+    console.log('Database connection successful');
 
     const app = createApp();
     const server = app.listen(PORT, () => {
@@ -41,7 +43,7 @@ const startServer = async(): Promise<void> => {
           process.exit(1);
         }
 
-        // todo disconnect from database
+        await disconnectFromDatabase();
         
         console.log('Server closed successfully. Goodbye!');
         process.exit(0);

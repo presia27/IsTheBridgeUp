@@ -70,7 +70,7 @@ Retrieves complete information for a specific bridge, including current up/down 
 **Endpoint**: `GET /api/v1/bridges/{id}`
 
 #### Path Parameters
-- `id` (number, required) - The unique identifier of the bridge
+- `id` (string, required) - The unique identifier of the bridge
 
 #### Query Parameters
 - `timetags` (boolean, optional) - When set to `true`, appends the last 4 digits of the current Unix timestamp (in milliseconds) to the `liveimg` URL. This forces browsers to refresh cached images.
