@@ -21,7 +21,7 @@ const bridgeCache = new NodeCache(
 const cacheKey = "bridgeData";
 // Determines whether new API calls can be made and written to cache
 // If false, requests will use data from cache and not make unnecessary calls to the external API
-let writeFlag = false;
+let writeFlag = true;
 
 // allow writing/new requests when the data expires
 bridgeCache.on('expired', function(key, value) {
@@ -49,36 +49,27 @@ const httpsAgent = new https.Agent({
 // });
 
 const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
-  // if (bridgeCache.has(cacheKey) && !writeFlag) {
-  //   // If bridge data is ALREADY cached within the specified interval
-  //   console.log("Fetching cached data...");
-  //   const cacheValue: ConnectorDataWrapper | undefined = bridgeCache.get(cacheKey);
-  //   if (cacheValue !== undefined && cacheValue !== null) {
-  //     return cacheValue;
-  //   } else {
-  //     writeFlag = true;
-  //     return noData;
-  //   }
-  // }
-
   if (writeFlag) {
+    // temporarily delay ttl for existing value to prevent calls while refreshing data
+    // when a key expires, the expires event will fire with every request, hence this fix
+    bridgeCache.ttl(cacheKey, 15);
     writeFlag = false;
 
-    return await sdotService.get('/').then((response) => {
+    try {
+      const responseData = await sdotService.get('/');
       console.log('Successfully fetched data from SDOT');
-      const parsedData = JSON.parse(response.data); // SDOT always sends stringified data
-
+      const parsedData = JSON.parse(responseData.data);
       const bridgeDataWrapped: ConnectorDataWrapper = {
         LastUpdate: Date.now(),
         data: parsedData as SdotDataFormat[]
-      }
+      };
 
       bridgeCache.set(cacheKey, bridgeDataWrapped);
       return bridgeDataWrapped;
-    }).catch((error) => {
+    } catch (error) {
       console.error("An error occured when trying to connect to API: " + error);
       return noData;
-    });
+    }
   } else {
     // If bridge data is ALREADY cached within the specified interval
     console.log("Fetching cached data...");
