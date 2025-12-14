@@ -43,10 +43,10 @@ export async function getAllBridgeData(req: Request, res: Response) {
   res.send(apiResponseData);
 }
 
-async function bridgeDataProvider(queryString: string, timetagsParam: string, id?: number,) {
+async function bridgeDataProvider(queryString: string, timetagsParam: string, id?: number) {
   const pool = getPool();
 
-  let sqlparams = [];
+  const sqlparams = [];
   if (id) {
     sqlparams.push(id);
   }

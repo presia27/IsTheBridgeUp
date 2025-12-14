@@ -107,7 +107,7 @@ export async function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[]
 
       let timetagAppend = ''; // empty by default, assuming timetags is false
       if (timetags) {
-        timetagAppend = (externalData.LastUpdate % 10000).toString();
+        timetagAppend = '?' +  (externalData.LastUpdate % 10000).toString();
       }
 
       bridgeDetailsCleaned.push({
@@ -117,7 +117,7 @@ export async function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[]
         latitude: bridge.latitude,
         longitude: bridge.longitude,
         staticimg: bridge.staticimg,
-        liveimg: bridge.liveimg + '?' + timetagAppend,
+        liveimg: bridge.liveimg + timetagAppend,
         bridge_type: bridge.bridge_type,
         short_name: bridge.short_name,
         status: bridgeStatus
