@@ -1,5 +1,5 @@
 export interface BridgeListItem {
-  id: string;
+  id: number;
   name: string;
   region: string;
 }
@@ -9,11 +9,13 @@ export interface BridgeListApiResponse {
   bridges: BridgeListItem[]
 }
 
+export type BridgeStatusType = 'Up' | 'Down' | 'Unknown';
+
 /**
  * Format of all bridge details
  */
 export interface BridgeDetails {
-  id: string;
+  id: number;
   name: string;
   region: string;
   latitude: number;
@@ -22,7 +24,7 @@ export interface BridgeDetails {
   liveimg: string | null;
   'bridge_type': string | null;
   'short_name': string | null;
-  status: 'Up' | 'Down' | 'Unknown';
+  status: BridgeStatusType;
 }
 
 /**

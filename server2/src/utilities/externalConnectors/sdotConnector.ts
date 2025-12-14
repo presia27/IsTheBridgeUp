@@ -2,6 +2,8 @@ import axios from 'axios';
 import https from 'https'
 import NodeCache from 'node-cache';
 import { getSdotMock as sdotService } from './mock/sdotMock';
+import { BridgeDetails, BridgeDetailsApiResponse, BridgeDetailsDbResponse, BridgeStatusType } from '@/types/bridgeResponseTypes';
+import { SdotDataFormat, ConnectorDataFormats, ConnectorDataWrapper } from '@/types/connectorTypes';
 
 const CONFIG = {
   baseURL: 'https://web.seattle.gov/Travelers/api/Map/GetBridgeData',
@@ -17,6 +19,8 @@ const bridgeCache = new NodeCache(
     deleteOnExpire: false
   });
 const cacheKey = "bridgeData";
+// Determines whether new API calls can be made and written to cache
+// If false, requests will use data from cache and not make unnecessary calls to the external API
 let writeFlag = false;
 
 // allow writing/new requests when the data expires
@@ -25,8 +29,8 @@ bridgeCache.on('expired', function(key, value) {
 });
 
 // insert empty, already expired value
-const noData: bridgeDataInternal = {
-  lastUpdate: Date.now(),
+const noData: ConnectorDataWrapper = {
+  LastUpdate: Date.now(),
   data: []
 }
 bridgeCache.set(cacheKey, noData, 1); // 1 seconds ttl - expires almost immediately
@@ -44,25 +48,17 @@ const httpsAgent = new https.Agent({
 //   httpsAgent: httpsAgent
 // });
 
-interface sdotDataFormat {
-  BridgeID: number;
-  DisplayName: string;
-  Latitude: number;
-  Longitude: number;
-  Name: string;
-  Status: 'open' | 'closed';
-}
-
-interface bridgeDataInternal {
-  lastUpdate: number,
-  data: sdotDataFormat[]
-}
-
-const getBridgeData = async () => {
+const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
   if (bridgeCache.has(cacheKey) && !writeFlag) {
     // If bridge data is ALREADY cached within the specified interval
     console.log("Fetching cached data...");
-    return bridgeCache.get(cacheKey);
+    const cacheValue: ConnectorDataWrapper | undefined = bridgeCache.get(cacheKey);
+    if (cacheValue !== undefined && cacheValue !== null) {
+      return cacheValue;
+    } else {
+      writeFlag = true;
+      return noData;
+    }
   }
 
   if (writeFlag) {
@@ -72,9 +68,9 @@ const getBridgeData = async () => {
       console.log('Successfully fetched data from SDOT');
       const parsedData = JSON.parse(response.data); // SDOT always sends stringified data
 
-      const bridgeDataWrapped: bridgeDataInternal = {
-        lastUpdate: Date.now(),
-        data: parsedData
+      const bridgeDataWrapped: ConnectorDataWrapper = {
+        LastUpdate: Date.now(),
+        data: parsedData as SdotDataFormat[]
       }
 
       bridgeCache.set(cacheKey, bridgeDataWrapped);
@@ -87,4 +83,54 @@ const getBridgeData = async () => {
 
   // fallback return
   return noData;
+}
+
+/**
+ * Takes in an array of bridge metadata objects from the database,
+ * finds the live data for each, and returns a formatted API
+ * response. This essentially helps standardize the data.
+ */
+export function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[], timetags: boolean): BridgeDetailsApiResponse {
+  const bridgeDetailsCleaned: BridgeDetails[] = [];
+  let lastUpdate = -1;
+
+  getBridgeData().then((externalData) => {
+    lastUpdate = externalData.LastUpdate;
+    bridgeMetadata.forEach((bridge) => {
+      let bridgeStatus: BridgeStatusType = 'Unknown';
+      const externalBridge = externalData.data.filter((b) => b.BridgeID === parseInt(bridge.externalapi_id));
+
+      if (externalBridge.length >= 1 && externalBridge[0] !== undefined) {
+        switch (externalBridge[0].Status) {
+          case 'closed': bridgeStatus = 'Down'; break;
+          case 'open': bridgeStatus = 'Up'; break;
+          default: bridgeStatus = 'Unknown';
+        }
+      }
+
+      let timetagAppend = ''; // empty by default, assuming timetags is false
+      if (timetags) {
+        timetagAppend = (externalData.LastUpdate % 10000).toString();
+      }
+
+      bridgeDetailsCleaned.push({
+        id: bridge.id,
+        name: bridge.name,
+        region: bridge.region,
+        latitude: bridge.latitude,
+        longitude: bridge.longitude,
+        staticimg: bridge.staticimg,
+        liveimg: bridge.liveimg + timetagAppend,
+        bridge_type: bridge.bridge_type,
+        short_name: bridge.short_name,
+        status: bridgeStatus
+      });
+    });
+  });
+
+  return {
+    LastUpdate: lastUpdate,
+    count: bridgeDetailsCleaned.length,
+    bridges: bridgeDetailsCleaned
+  };
 }
