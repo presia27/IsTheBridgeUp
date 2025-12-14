@@ -25,20 +25,40 @@ export async function getBridgeList(req: Request, res: Response) {
 
 export async function getBridgeById(req: Request, res: Response) {
   const requestedId: number = parseInt(req.params.id as string);
-  const timetags = req.query.timetags;
+  const timetags = req.query.timetags as string;
   const queryString: string = 'SELECT * FROM bridges WHERE id=$1';
 
+  const apiResponseData = await bridgeDataProvider(queryString, timetags, requestedId);
+
+  // Combine, sort, and send back to user agent
+  res.send(apiResponseData);
+}
+
+export async function getAllBridgeData(req: Request, res: Response) {
+  const timetags = req.query.timetags as string;
+  const queryString: string = 'SELECT * FROM bridges';
+
+  const apiResponseData = await bridgeDataProvider(queryString, timetags);
+  
+  res.send(apiResponseData);
+}
+
+async function bridgeDataProvider(queryString: string, timetagsParam: string, id?: number,) {
   const pool = getPool();
 
+  let sqlparams = [];
+  if (id) {
+    sqlparams.push(id);
+  }
+
   // Get metadata
-  const bridgeDbResult: QueryResult<BridgeDetailsDbResponse> = await pool.query(queryString, [requestedId]);
+  const bridgeDbResult: QueryResult<BridgeDetailsDbResponse> = await pool.query(queryString, sqlparams);
 
   // Sort all responses by API
   const sdotBridges = bridgeDbResult.rows.filter((b) => b.apiprovider === 'sdot');
-  
-  // Call APIs
-  const sdotFilledData = await fillBridgeStatus(sdotBridges, timetags === 'true' ? true : false);
 
-  // Combine, sort, and send back to user agent
-  res.send(sdotFilledData);
+  // Call APIs
+  const sdotFilledData = await fillBridgeStatus(sdotBridges, timetagsParam === 'true' ? true : false);
+
+  return sdotFilledData;
 }

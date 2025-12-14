@@ -117,7 +117,7 @@ export async function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[]
         latitude: bridge.latitude,
         longitude: bridge.longitude,
         staticimg: bridge.staticimg,
-        liveimg: bridge.liveimg + timetagAppend,
+        liveimg: bridge.liveimg + '?' + timetagAppend,
         bridge_type: bridge.bridge_type,
         short_name: bridge.short_name,
         status: bridgeStatus

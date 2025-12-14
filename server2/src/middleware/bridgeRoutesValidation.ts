@@ -31,5 +31,6 @@ export const validateId = [
 export const validateTimetags = [
   query('timetags')
       .optional()
-      .isBoolean()
+      .isBoolean(),
+  handleErrors
 ];
