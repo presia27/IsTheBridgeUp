@@ -9,13 +9,13 @@ export async function getBridgeList(req: Request, res: Response) {
   const queryString = 'SELECT id, name, region FROM bridges';
   const pool = getPool();
 
-  const bridgeListResult: QueryResult<BridgeListItem> = await pool.query(queryString);
+  const bridgeListResult: QueryResult<any> = await pool.query(queryString);
   
   const bridgeListCleaned: BridgeListItem[] = bridgeListResult.rows.map(row => ({
-    id: row.id,
+    id: parseInt(row.id),
     name: row.name,
     region: row.region
-  }))
+  }));
 
   res.json({
     count: bridgeListCleaned.length,

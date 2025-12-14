@@ -40,7 +40,7 @@ export interface BridgeDetailsApiResponse {
  * Formate of the data coming from the database
  */
 export interface BridgeDetailsDbResponse {
-  id: number;
+  id: string;
   name: string;
   region: string;
   latitude: number;

@@ -3,7 +3,7 @@ import https from 'https'
 import NodeCache from 'node-cache';
 import { getSdotMock as sdotService } from './mock/sdotMock';
 import { BridgeDetails, BridgeDetailsApiResponse, BridgeDetailsDbResponse, BridgeStatusType } from '@/types/bridgeResponseTypes';
-import { SdotDataFormat, ConnectorDataFormats, ConnectorDataWrapper } from '@/types/connectorTypes';
+import { SdotDataFormat, ConnectorDataWrapper } from '@/types/connectorTypes';
 
 const CONFIG = {
   baseURL: 'https://web.seattle.gov/Travelers/api/Map/GetBridgeData',
@@ -111,7 +111,7 @@ export async function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[]
       }
 
       bridgeDetailsCleaned.push({
-        id: bridge.id,
+        id: parseInt(bridge.id),
         name: bridge.name,
         region: bridge.region,
         latitude: bridge.latitude,
