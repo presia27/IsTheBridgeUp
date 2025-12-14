@@ -49,22 +49,22 @@ const httpsAgent = new https.Agent({
 // });
 
 const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
-  if (bridgeCache.has(cacheKey) && !writeFlag) {
-    // If bridge data is ALREADY cached within the specified interval
-    console.log("Fetching cached data...");
-    const cacheValue: ConnectorDataWrapper | undefined = bridgeCache.get(cacheKey);
-    if (cacheValue !== undefined && cacheValue !== null) {
-      return cacheValue;
-    } else {
-      writeFlag = true;
-      return noData;
-    }
-  }
+  // if (bridgeCache.has(cacheKey) && !writeFlag) {
+  //   // If bridge data is ALREADY cached within the specified interval
+  //   console.log("Fetching cached data...");
+  //   const cacheValue: ConnectorDataWrapper | undefined = bridgeCache.get(cacheKey);
+  //   if (cacheValue !== undefined && cacheValue !== null) {
+  //     return cacheValue;
+  //   } else {
+  //     writeFlag = true;
+  //     return noData;
+  //   }
+  // }
 
   if (writeFlag) {
     writeFlag = false;
 
-    await sdotService.get('/').then((response) => {
+    return await sdotService.get('/').then((response) => {
       console.log('Successfully fetched data from SDOT');
       const parsedData = JSON.parse(response.data); // SDOT always sends stringified data
 
@@ -77,12 +77,19 @@ const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
       return bridgeDataWrapped;
     }).catch((error) => {
       console.error("An error occured when trying to connect to API: " + error);
+      return noData;
     });
-
+  } else {
+    // If bridge data is ALREADY cached within the specified interval
+    console.log("Fetching cached data...");
+    const cacheValue: ConnectorDataWrapper | undefined = bridgeCache.get(cacheKey);
+    if (cacheValue !== undefined && cacheValue !== null) {
+      return cacheValue;
+    } else {
+      writeFlag = true;
+      return noData;
+    }
   }
-
-  // fallback return
-  return noData;
 }
 
 /**
@@ -90,20 +97,19 @@ const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
  * finds the live data for each, and returns a formatted API
  * response. This essentially helps standardize the data.
  */
-export function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[], timetags: boolean): BridgeDetailsApiResponse {
+export async function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[], timetags: boolean): Promise<BridgeDetailsApiResponse> {
   const bridgeDetailsCleaned: BridgeDetails[] = [];
   let lastUpdate = -1;
 
-  getBridgeData().then((externalData) => {
+  await getBridgeData().then((externalData) => {
     lastUpdate = externalData.LastUpdate;
     bridgeMetadata.forEach((bridge) => {
       let bridgeStatus: BridgeStatusType = 'Unknown';
       const externalBridge = externalData.data.filter((b) => b.BridgeID === parseInt(bridge.externalapi_id));
-
       if (externalBridge.length >= 1 && externalBridge[0] !== undefined) {
         switch (externalBridge[0].Status) {
-          case 'closed': bridgeStatus = 'Down'; break;
-          case 'open': bridgeStatus = 'Up'; break;
+          case 'Closed': bridgeStatus = 'Down'; break;
+          case 'Open': bridgeStatus = 'Up'; break;
           default: bridgeStatus = 'Unknown';
         }
       }
@@ -125,6 +131,7 @@ export function fillBridgeStatus(bridgeMetadata: BridgeDetailsDbResponse[], time
         short_name: bridge.short_name,
         status: bridgeStatus
       });
+
     });
   });
 

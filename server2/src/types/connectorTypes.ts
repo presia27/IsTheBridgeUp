@@ -4,7 +4,7 @@ export interface SdotDataFormat {
   Latitude: number;
   Longitude: number;
   Name: string;
-  Status: 'open' | 'closed';
+  Status: 'Open' | 'Closed';
 }
 
 export type ConnectorDataFormats = SdotDataFormat; // || wsdotDataFormat || somethingElseFormat...

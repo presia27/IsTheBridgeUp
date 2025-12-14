@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import { getPool } from '@/utilities/pgDatabase';
 import { QueryResult, QueryResultRow } from 'pg';
 import { BridgeDetails, BridgeDetailsDbResponse, BridgeListItem } from '@/types/bridgeResponseTypes';
@@ -37,8 +37,8 @@ export async function getBridgeById(req: Request, res: Response) {
   const sdotBridges = bridgeDbResult.rows.filter((b) => b.apiprovider === 'sdot');
   
   // Call APIs
-  const sdotFilledData = fillBridgeStatus(sdotBridges, timetags === 'true' ? true : false);
+  const sdotFilledData = await fillBridgeStatus(sdotBridges, timetags === 'true' ? true : false);
 
   // Combine, sort, and send back to user agent
-  
+  res.send(sdotFilledData);
 }
