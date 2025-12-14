@@ -1,7 +1,7 @@
 import axios from 'axios';
 import https from 'https'
 import NodeCache from 'node-cache';
-import { getSdotMock as sdotService } from './mock/sdotMock';
+//import { getSdotMock as sdotService } from './mock/sdotMock';
 import { BridgeDetails, BridgeDetailsApiResponse, BridgeDetailsDbResponse, BridgeStatusType } from '@/types/bridgeResponseTypes';
 import { SdotDataFormat, ConnectorDataWrapper } from '@/types/connectorTypes';
 
@@ -43,10 +43,10 @@ const httpsAgent = new https.Agent({
 
 /* Axios instance */
 
-// const sdotService = axios.create({
-//   baseURL: CONFIG.baseURL,
-//   httpsAgent: httpsAgent
-// });
+const sdotService = axios.create({
+  baseURL: CONFIG.baseURL,
+  httpsAgent: httpsAgent
+});
 
 const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
   if (writeFlag) {
