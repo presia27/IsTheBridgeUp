@@ -2,8 +2,8 @@
  * Main Express routes for this server.
  */
 
-import { Router } from "express";
-import { bridgeRoutes } from "./bridgeRoutes";
+import { Router } from 'express';
+import { bridgeRoutes } from './bridgeRoutes';
 
 export const routes = Router();
 
@@ -15,7 +15,7 @@ routes.get('/', (request, response) => {
     endpoints: {
       
     },
-    documentation: "to be added soon..."
+    documentation: 'to be added soon...'
   });
 });
 

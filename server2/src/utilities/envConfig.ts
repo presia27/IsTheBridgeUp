@@ -16,7 +16,7 @@ const requiredVarsDev: string[] = [
 
 const requiredVarsProd: string[] = [
   'connectionString'
-]
+];
 
 // Load .env
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -42,18 +42,18 @@ export const getEnvVar = (key: string, defaultVal?: string): string => {
     return defaultVal;
   }
 
-  throw new Error(`Environment variable key \'${key}\' not set`);
-}
+  throw new Error(`Environment variable key '${key}' not set`);
+};
 
 /** Check if this is a development environment according to the file */
 export const isDevelopment = (): boolean => {
   return getEnvVar('NODE_ENV', 'development') === 'development';
-}
+};
 
 /** Check if this is a production environment according to the file */
 export const isProduction = (): boolean => {
   return getEnvVar('NODE_ENV', 'development') === 'production';
-}
+};
 
 /**
  * Validate the loaded env file to ensure all required
@@ -71,6 +71,6 @@ export const validateEnv = (): void => {
   });
 
   if (missing.length > 0) {
-    throw new Error(`The loaded environment is missing the following variables: ${missing.join(', ')}`)
+    throw new Error(`The loaded environment is missing the following variables: ${missing.join(', ')}`);
   }
-}
+};

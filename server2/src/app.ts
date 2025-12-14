@@ -23,6 +23,6 @@ const createApp = (): Express => {
   app.use('/', routes);
 
   return app;
-}
+};
 
 export default createApp;

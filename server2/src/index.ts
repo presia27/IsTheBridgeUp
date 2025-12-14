@@ -4,9 +4,9 @@
  * @author Preston Sia
  */
 
-import createApp from "@/app";
-import { validateEnv } from "./utilities/envConfig";
-import { connectToDatabase, disconnectFromDatabase } from "./utilities/pgDatabase";
+import createApp from '@/app';
+import { validateEnv } from './utilities/envConfig';
+import { connectToDatabase, disconnectFromDatabase } from './utilities/pgDatabase';
 
 const PORT = process.env.PORT || 8000;
 
@@ -57,7 +57,7 @@ const startServer = async(): Promise<void> => {
     console.error('Failed to start the server: ', err);
     process.exit(1);
   }
-}
+};
 
 // Handle uncaught EXCEPTIONS and REJECTIONS
 process.on('uncaughtException', (error) => {

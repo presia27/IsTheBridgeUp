@@ -1,7 +1,7 @@
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import { getPool } from '@/utilities/pgDatabase';
-import { QueryResult, QueryResultRow } from 'pg';
-import { BridgeDetails, BridgeDetailsDbResponse, BridgeListItem } from '@/types/bridgeResponseTypes';
+import { QueryResult } from 'pg';
+import { BridgeDetailsDbResponse, BridgeListItem } from '@/types/bridgeResponseTypes';
 import { fillBridgeStatus } from '@/utilities/externalConnectors/sdotConnector';
 
 export async function getBridgeList(req: Request, res: Response) {

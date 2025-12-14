@@ -14,7 +14,7 @@ function createDbConfig(): PoolConfig {
     return {
       connectionString: getEnvVar('connectionString'),
       ssl: {rejectUnauthorized: false }
-    }
+    };
   } else {
     return {
       host: getEnvVar('DB_HOST'),
@@ -25,7 +25,7 @@ function createDbConfig(): PoolConfig {
       ssl: {
         rejectUnauthorized: false
       }
-    }
+    };
   }
 }
 

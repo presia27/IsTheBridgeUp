@@ -1,5 +1,5 @@
 import axios from 'axios';
-import https from 'https'
+import https from 'https';
 import NodeCache from 'node-cache';
 //import { getSdotMock as sdotService } from './mock/sdotMock';
 import { BridgeDetails, BridgeDetailsApiResponse, BridgeDetailsDbResponse, BridgeStatusType } from '@/types/bridgeResponseTypes';
@@ -9,7 +9,7 @@ const CONFIG = {
   baseURL: 'https://web.seattle.gov/Travelers/api/Map/GetBridgeData',
   timeDelaySeconds: 45,
   expireCheckIntervalSeconds: 23
-}
+};
 
 // Allows the API to return data from a cache instead of pinging the external API for every request
 const bridgeCache = new NodeCache(
@@ -18,7 +18,7 @@ const bridgeCache = new NodeCache(
     checkperiod: CONFIG.expireCheckIntervalSeconds,
     deleteOnExpire: false
   });
-const cacheKey = "bridgeData";
+const cacheKey = 'bridgeData';
 // Determines whether new API calls can be made and written to cache
 // If false, requests will use data from cache and not make unnecessary calls to the external API
 let writeFlag = true;
@@ -32,7 +32,7 @@ bridgeCache.on('expired', function(key, value) {
 const noData: ConnectorDataWrapper = {
   LastUpdate: Date.now(),
   data: []
-}
+};
 bridgeCache.set(cacheKey, noData, 1); // 1 seconds ttl - expires almost immediately
 
 /* Ignore SSL problems */
@@ -67,12 +67,12 @@ const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
       bridgeCache.set(cacheKey, bridgeDataWrapped);
       return bridgeDataWrapped;
     } catch (error) {
-      console.error("An error occured when trying to connect to API: " + error);
+      console.error('An error occured when trying to connect to API: ' + error);
       return noData;
     }
   } else {
     // If bridge data is ALREADY cached within the specified interval
-    console.log("Fetching cached data...");
+    console.log('Fetching cached data...');
     const cacheValue: ConnectorDataWrapper | undefined = bridgeCache.get(cacheKey);
     if (cacheValue !== undefined && cacheValue !== null) {
       return cacheValue;
@@ -81,7 +81,7 @@ const getBridgeData = async (): Promise<ConnectorDataWrapper> => {
       return noData;
     }
   }
-}
+};
 
 /**
  * Takes in an array of bridge metadata objects from the database,
