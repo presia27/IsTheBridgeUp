@@ -5,7 +5,7 @@
  */
 
 import createApp from '@/app';
-import { validateEnv } from './utilities/envConfig';
+import { useDatabase, validateEnv } from './utilities/envConfig';
 import { connectToDatabase, disconnectFromDatabase } from './utilities/pgDatabase';
 
 const PORT = process.env.PORT || 8000;
@@ -22,9 +22,13 @@ const startServer = async(): Promise<void> => {
     validateEnv();
     console.log('Environment variables validated');
 
-    // Connect to database
-    await connectToDatabase();
-    console.log('Database connection successful');
+    // Connect to database if specified by env
+    if (useDatabase()) {
+      await connectToDatabase();
+      console.log('Database connection successful');
+    } else {
+      console.log('Using local static records for bridge data');
+    }
 
     const app = createApp();
     const server = app.listen(PORT, () => {
