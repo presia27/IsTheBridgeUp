@@ -7,6 +7,10 @@ import path from 'path';
 
 // Required variables
 const requiredVarsDev: string[] = [
+
+];
+
+const requiredDBVarsDev: string[] = [
   'DB_HOST',
   'DB_PORT',
   'DB_DATABASE',
@@ -15,6 +19,10 @@ const requiredVarsDev: string[] = [
 ];
 
 const requiredVarsProd: string[] = [
+
+];
+
+const requiredDBVarsProd: string[] = [
   'connectionString'
 ];
 
@@ -55,12 +63,22 @@ export const isProduction = (): boolean => {
   return getEnvVar('NODE_ENV', 'development') === 'production';
 };
 
+export const useDatabase = (): boolean => {
+  return getEnvVar('USE_DATABASE') === 'true';
+};
+
 /**
  * Validate the loaded env file to ensure all required
  * keys and values are present.
  */
 export const validateEnv = (): void => {
   const requiredVars = isProduction() ? requiredVarsProd : requiredVarsDev;
+
+  if (useDatabase()) {
+    const dbVars = isProduction() ? requiredDBVarsProd : requiredDBVarsDev;
+    requiredVars.concat(dbVars);
+  }
+
   const missing = requiredVars.filter(varName => {
     try {
       getEnvVar(varName);
