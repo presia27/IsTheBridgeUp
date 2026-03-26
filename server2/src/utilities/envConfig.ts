@@ -63,7 +63,7 @@ export const isProduction = (): boolean => {
   return getEnvVar('NODE_ENV', 'development') === 'production';
 };
 
-export const useDatabase = (): boolean => {
+export const isDatabaseEnabled = (): boolean => {
   return getEnvVar('USE_DATABASE') === 'true';
 };
 
@@ -74,7 +74,7 @@ export const useDatabase = (): boolean => {
 export const validateEnv = (): void => {
   const requiredVars = isProduction() ? requiredVarsProd : requiredVarsDev;
 
-  if (useDatabase()) {
+  if (isDatabaseEnabled()) {
     const dbVars = isProduction() ? requiredDBVarsProd : requiredDBVarsDev;
     requiredVars.concat(dbVars);
   }

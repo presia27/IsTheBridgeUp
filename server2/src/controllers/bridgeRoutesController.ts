@@ -4,11 +4,11 @@ import { QueryResult } from 'pg';
 import { BridgeDetailsApiResponse, BridgeDetailsDbResponse, BridgeListItem } from '@/types/bridgeResponseTypes';
 import { fillBridgeStatus } from '@/utilities/externalConnectors/sdotConnector';
 import { bridgeMetadata } from '@/data/bridges';
-import { useDatabase } from '@/utilities/envConfig';
+import { isDatabaseEnabled } from '@/utilities/envConfig';
 
 export async function getBridgeList(req: Request, res: Response) {
   let bridgeListCleaned: BridgeListItem[];
-  if (useDatabase()) {
+  if (isDatabaseEnabled()) {
     // query strings to use
     const queryString = 'SELECT id, name, region FROM bridges';
     const pool = getPool();
@@ -40,7 +40,7 @@ export async function getBridgeById(req: Request, res: Response) {
 
   let bridgeInfo: BridgeDetailsDbResponse[];
 
-  if (useDatabase()) {
+  if (isDatabaseEnabled()) {
     const queryString: string = 'SELECT * FROM bridges WHERE id=$1';
     bridgeInfo = await fetchFromDb(queryString, requestedId);
   } else {
@@ -58,7 +58,7 @@ export async function getAllBridgeData(req: Request, res: Response) {
 
   let bridgeInfo: BridgeDetailsDbResponse[];
 
-  if (useDatabase()) {
+  if (isDatabaseEnabled()) {
     const queryString: string = 'SELECT * FROM bridges';
     bridgeInfo = await fetchFromDb(queryString);
   } else {

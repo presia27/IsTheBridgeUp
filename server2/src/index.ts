@@ -5,7 +5,7 @@
  */
 
 import createApp from '@/app';
-import { useDatabase, validateEnv } from './utilities/envConfig';
+import { isDatabaseEnabled, validateEnv } from './utilities/envConfig';
 import { connectToDatabase, disconnectFromDatabase } from './utilities/pgDatabase';
 
 const PORT = process.env.PORT || 8000;
@@ -23,7 +23,7 @@ const startServer = async(): Promise<void> => {
     console.log('Environment variables validated');
 
     // Connect to database if specified by env
-    if (useDatabase()) {
+    if (isDatabaseEnabled()) {
       await connectToDatabase();
       console.log('Database connection successful');
     } else {
