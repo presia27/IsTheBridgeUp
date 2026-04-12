@@ -1,0 +1,102 @@
+import { BridgeDetailsDbResponse } from '@/types/bridgeResponseTypes';
+
+export const bridgeMetadata: BridgeDetailsDbResponse[] = [
+  {
+    id: '1',
+    name: '1st Avenue South',
+    region: 'Duwamish',
+    latitude: 47.542215205409605,
+    longitude: -122.3344640417431,
+    staticimg: null,
+    liveimg: 'https://images.wsdot.wa.gov/nw/099vc02671.jpg',
+    externalapi_id: '1',
+    apiprovider: 'sdot',
+    bridge_type: 'Bascule',
+    short_name: '1st Ave',
+    can_trust: true
+  },
+  {
+    id: '3',
+    name: 'Lower Spokane Street',
+    region: 'Duwamish',
+    latitude: 47.571378458873,
+    longitude: -122.35354958119821,
+    staticimg: null,
+    liveimg: 'https://www.seattle.gov/trafficcams/images/11_SW_Spokane_NS.jpg',
+    externalapi_id: '6',
+    apiprovider: 'sdot',
+    bridge_type: 'Swing',
+    short_name: 'Spokane St.',
+    can_trust: false
+  },
+  {
+    id: '4',
+    name: 'South Park',
+    region: 'Duwamish',
+    latitude: 47.529234689934995,
+    longitude: -122.31411943403083,
+    staticimg: null,
+    liveimg: 'https://www.seattle.gov/trafficcams/images/14_S_Cloverdale_SEC.jpg',
+    externalapi_id: '29',
+    apiprovider: 'sdot',
+    bridge_type: 'Bascule',
+    short_name: 'South Park',
+    can_trust: true
+  },
+  {
+    id: '5',
+    name: 'Ballard',
+    region: 'Ship Canal',
+    latitude: 47.65981573581313,
+    longitude: -122.37618949046208,
+    staticimg: null,
+    liveimg: 'https://www.seattle.gov/trafficcams/images/15_W_Nickerson.jpg',
+    externalapi_id: '2',
+    apiprovider: 'sdot',
+    bridge_type: 'Bascule',
+    short_name: 'Ballard',
+    can_trust: true
+  },
+  {
+    id: '6',
+    name: 'Fremont',
+    region: 'Ship Canal',
+    latitude: 47.64760335277019,
+    longitude: -122.34973031435234,
+    staticimg: null,
+    liveimg: 'https://www.seattle.gov/trafficcams/images/Fremont_N_34_NS.jpg',
+    externalapi_id: '3',
+    apiprovider: 'sdot',
+    bridge_type: 'Bascule',
+    short_name: 'Fremont',
+    can_trust: true
+  },
+  {
+    id: '7',
+    name: 'University',
+    region: 'Ship Canal',
+    latitude: 47.65265275983819,
+    longitude: -122.32043018120577,
+    staticimg: null,
+    liveimg: 'https://www.seattle.gov/trafficcams/images/Eastlake_Fuhrman_PTZ.jpg',
+    externalapi_id: '21',
+    apiprovider: 'sdot',
+    bridge_type: 'Bascule',
+    short_name: 'University',
+    can_trust: true
+  },
+  {
+    id: '8',
+    name: 'Montlake',
+    region: 'Ship Canal',
+    latitude: 47.64728430687677,
+    longitude: -122.3045850726251,
+    staticimg: null,
+    liveimg: 'https://www.seattle.gov/trafficcams/images/Montlake_NE_Pacific_EW.jpg',
+    externalapi_id: '4',
+    apiprovider: 'sdot',
+    bridge_type: 'Bascule',
+    short_name: 'Montlake',
+    can_trust: true
+  }
+];
