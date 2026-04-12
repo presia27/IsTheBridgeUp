@@ -48,7 +48,7 @@ export const BridgeProvider = ({ children }: React.PropsWithChildren) => {
      * @returns Promise when bridge data has been fetched
      */
     const fetchAllBridgeData = () => {
-        const apiRoute = "get-all-bridge-data"
+        const apiRoute = "api/v1/bridges/all"
 
         return new Promise(async (resolve) => {
             try {
