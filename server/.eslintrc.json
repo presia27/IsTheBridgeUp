@@ -1,0 +1,37 @@
+/* Some rules adapted from the eslint configuration
+ * written by Professor Charles Bryan, Computer Science at UW Tacoma
+ */
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 15,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        // Code quality for educational clarity
+        "no-console": "off", // Allow console for educational logging
+        "prefer-const": "error",
+        "no-var": "error",
+        "no-unused-vars": "off", // Turn off base rule for TypeScript
+        "@typescript-eslint/no-unused-vars": "error",
+
+        // Style preferences for educational clarity
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "comma-dangle": ["error", "never"],
+
+        // TypeScript-specific rules
+        "@typescript-eslint/no-explicit-any": "warn"
+    }
+}
